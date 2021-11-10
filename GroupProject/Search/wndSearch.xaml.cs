@@ -21,7 +21,7 @@ namespace GroupProject.Search
     /// </summary>
     public partial class wndSearch : Window
     {
-
+        //New Stuff
         public wndSearch()
         {
             InitializeComponent();
