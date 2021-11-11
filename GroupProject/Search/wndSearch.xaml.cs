@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,20 +12,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using GroupProject.Main;
-using GroupProject.Items;
+using GroupProject;
 
 namespace GroupProject.Search
 {
-    /// <summary>
+     /// <summary>
     /// Interaction logic for wndSearch.xaml
     /// </summary>
     public partial class wndSearch : Window
     {
-        //New Stuff
+     
         public wndSearch()
         {
             InitializeComponent();
+
         }
+
     }
 }
