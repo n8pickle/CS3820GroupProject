@@ -10,5 +10,10 @@ namespace GroupProject.Search
 {
     class clsSearchSQL
     {
+        clsDataAccess db = new clsDataAccess();
+
+
+
+
     }
 }
