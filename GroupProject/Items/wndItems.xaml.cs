@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using GroupProject.Model;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -20,8 +21,14 @@ namespace GroupProject.Items
     /// </summary>
     public partial class wndItems : Window
     {
-        public wndItems()
+        /// <summary>
+        /// ItemViewModel for bonding to the view
+        /// </summary>
+        public ItemViewModel Item;
+        public wndItems(ItemViewModel item)
         {
+            Item = item;
+            this.DataContext = Item;
             InitializeComponent();
         }
     }
