@@ -47,7 +47,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = '" + num + "';";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = " + num + ";";
 
                 return curQuery;
             }
@@ -66,7 +66,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = '" + date + "':";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "#:";
 
                 return curQuery;
             }
@@ -85,7 +85,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE TotalCost = '" +charge+ "';";
+                curQuery = "SELECT * FROM Invoices WHERE TotalCost = " +charge+ ";";
 
                 return curQuery;
             }
@@ -105,7 +105,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = '" + num + "' AND InvoiceDate = '" + date + "';";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = " + num + " AND InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -125,7 +125,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = '" + num + "' AND TotalCost = '" + charge + "';";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = " + num + " AND TotalCost = " + charge + ";";
 
 
                 return curQuery;
@@ -146,7 +146,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = '" + date + "' AND TotalCost = '" + charge + "';";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "# AND TotalCost = " + charge + ";";
 
                 return curQuery;
             }
@@ -167,9 +167,9 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = '"
-                            + num + "' AND InvoiceDate = '"
-                            + date + "' AND TotalCost = '" + charge + "';";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceNum = "
+                            + num + " AND InvoiceDate = #"
+                            + date + "# AND TotalCost = " + charge + ";";
 
                 return curQuery;
             }
@@ -260,9 +260,9 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = '" + num
-                            + "' AND TotalCost = '" + charge
-                            + "';";
+                curQuery = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + num
+                            + " AND TotalCost = " + charge
+                            + ";";
 
                 return curQuery;
             }
@@ -281,8 +281,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = '" + num
-                            + "';";
+                curQuery = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + num
+                            + ";";
 
                 return curQuery;
             }
@@ -301,8 +301,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceDate FROM Invoices WHERE TotalCost = '" + charge
-                            + "';";
+                curQuery = "SELECT InvoiceDate FROM Invoices WHERE TotalCost = " + charge
+                            + ";";
 
                 return curQuery;
             }
@@ -322,8 +322,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = '" + num +
-                            "' AND InvoiceDate = '" + date + "';";
+                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
+                            " AND InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -342,8 +342,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = '" + num +
-                            "';";
+                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
+                            ";";
 
                 return curQuery;
             }
@@ -362,7 +362,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = '" + date + "';";
+                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -382,8 +382,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = '" + charge +
-                            "' AND InvoiceDate = '" + date + "';";
+                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                            " AND InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -402,8 +402,8 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = '" + charge +
-                            "';";
+                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                            ";";
 
                 return curQuery;
             }
@@ -422,7 +422,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE InvoiceDate = '" + date + "';";
+                curQuery = "SELECT InvoiceNum FROM Invoice WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
