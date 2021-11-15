@@ -7,16 +7,21 @@
         mc:Ignorable="d"
         Title="wndSearch" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="Invoicedg" HorizontalAlignment="Left" Height="285" Margin="10,76,0,0" VerticalAlignment="Top" Width="774"/>
+        <DataGrid x:Name="Invoicedg" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="285" Margin="10,76,0,0" VerticalAlignment="Top" Width="774">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Invoice Number" Width=".3*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Invoice Date" Width=".3*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Total Charge" Width=".3*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
         <Label x:Name="InvNumLbl" Content="Invoice Number:" HorizontalAlignment="Left" Margin="20,27,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="InvNumCmb" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="InvNumCmb" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="InvNumCmb_SelectionChanged"/>
         <Label x:Name="InvDateLbl" Content="Invoice Date:" HorizontalAlignment="Left" Margin="248,30,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="InvDateCmb" HorizontalAlignment="Left" Margin="331,30,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="InvDateCmb" HorizontalAlignment="Left" Margin="331,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="InvDateCmb_SelectionChanged"/>
         <Label x:Name="InvTotalLbl" Content="Total Charge: " HorizontalAlignment="Left" Margin="456,27,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="543,30,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="SearchBtn" Content="Search" HorizontalAlignment="Left" Margin="668,28,0,0" VerticalAlignment="Top" Width="116"/>
-        <Button x:Name="ClearBtn" Content="Clear Selection" HorizontalAlignment="Left" Margin="668,52,0,0" VerticalAlignment="Top" Width="116"/>
-        <Button x:Name="SelectBtn" Content="Select Invoice" HorizontalAlignment="Left" Margin="683,379,0,0" VerticalAlignment="Top" Width="101" Height="31"/>
+        <ComboBox HorizontalAlignment="Left" Margin="543,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
+        <Button x:Name="ClearBtn" Content="Clear Selection" HorizontalAlignment="Left" Margin="668,33,0,0" VerticalAlignment="Top" Width="116" Click="ClearBtn_Click"/>
+        <Button x:Name="SelectBtn" Content="Select Invoice" HorizontalAlignment="Left" Margin="683,379,0,0" VerticalAlignment="Top" Width="101" Height="31" Click="SelectBtn_Click"/>
 
     </Grid>
 </Window>

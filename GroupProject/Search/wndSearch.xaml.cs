@@ -28,5 +28,29 @@ namespace GroupProject.Search
           
         }
 
+        private void InvNumCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void InvDateCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ClearBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
