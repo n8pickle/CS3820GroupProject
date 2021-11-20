@@ -29,7 +29,7 @@ namespace GroupProject.Items
         /// </summary>
         public void UpdateJewelryItem(ItemViewModel itemViewModel) 
         {
-            string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Id}";
+            string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Code}";
             int numOfRowsAffected = _dataAccess.ExecuteNonQuery(sSql);
             Console.WriteLine($"The number of rows affected was {numOfRowsAffected}");
         }
