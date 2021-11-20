@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GroupProject.Model;
 using GroupProject;
+using System.Reflection;
 
 namespace GroupProject.Items
 {
@@ -31,14 +32,14 @@ namespace GroupProject.Items
         {
             try
             {
-                string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Code}";
+                string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Code};";
                 int numOfRowsAffected = _dataAccess.ExecuteNonQuery(sSql);
                 Console.WriteLine($"The number of rows affected was {numOfRowsAffected}");
 
             } 
             catch (Exception ex)
             {
-                throw new ApplicationException($"There was an issue with communicating with the database, trying to get {itemViewModel.Name}. Message: {ex.Message}");
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
         
@@ -50,7 +51,7 @@ namespace GroupProject.Items
             try
             {
                 List<ItemViewModel> resultList = new List<ItemViewModel>();
-                string sSql = $"SELECT * FROM Item";
+                string sSql = $"select ItemCode, ItemDesc, Cost from Item;";
                 int recordsRetrieved = 0;
                 _dataAccess.ExecuteSQLStatement(sSql, ref recordsRetrieved);
                 // TODO parse DataTable to objects
@@ -58,7 +59,59 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"There was an issue with communicating with the database, trying to get {itemViewModel.Name}. Message: {ex.Message}");
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes Item from database where the item code matches
+        /// </summary>
+        /// <param name="code"></param>
+        public void DeleteItemByItemCode(string code)
+        {
+            try
+            {
+                string sSql = $"delete from Item where ItemCode like '{code}';";
+                _dataAccess.ExecuteNonQuery(sSql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// inserts item into the database.
+        /// </summary>
+        /// <param name="item"></param>
+        public void InsertItem(ItemViewModel item)
+        {
+            try
+            {
+                string sSql = $"insert into Item (ItemCode, ItemName, ItemDesc, ItemPrice) Values ('{item.Code}', '{item.Name}', '{item.Description}', {item.Price});";
+                _dataAccess.ExecuteNonQuery(sSql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the invoice number by the item code
+        /// </summary>
+        /// <param name="itemCode"></param>
+        public void GetInvoiceNumberByItemCode(string itemCode)
+        {
+            try
+            {
+                string sSql = $"select distinct(InvoiceNum) from LineItems where ItemCode = '{itemCode}';";
+                int recordsRetrieved = 0;
+                _dataAccess.ExecuteSQLStatement(sSql, ref recordsRetrieved);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
     }
