@@ -28,6 +28,7 @@ namespace GroupProject
             InitializeComponent();
         }
 
+        ///This is a onclick to go the the edit items page
 /*        private void GoToEditItems_Click(object sender, RoutedEventArgs e)
         {
             List<ItemViewModel> items = new List<ItemViewModel>
