@@ -29,9 +29,17 @@ namespace GroupProject.Items
         /// </summary>
         public void UpdateJewelryItem(ItemViewModel itemViewModel) 
         {
-            string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Code}";
-            int numOfRowsAffected = _dataAccess.ExecuteNonQuery(sSql);
-            Console.WriteLine($"The number of rows affected was {numOfRowsAffected}");
+            try
+            {
+                string sSql = $"UPDATE Item SET ItemDesc = {itemViewModel.Description}, ItemPrice = {itemViewModel.Price}, ItemName = {itemViewModel.Name} WHERE ItemNo = {itemViewModel.Code}";
+                int numOfRowsAffected = _dataAccess.ExecuteNonQuery(sSql);
+                Console.WriteLine($"The number of rows affected was {numOfRowsAffected}");
+
+            } 
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"There was an issue with communicating with the database, trying to get {itemViewModel.Name}. Message: {ex.Message}");
+            }
         }
         
         /// <summary>
@@ -39,12 +47,19 @@ namespace GroupProject.Items
         /// </summary>
         public List<ItemViewModel> GetAllJewelryItems() 
         {
-            List<ItemViewModel> resultList = new List<ItemViewModel>();
-            string sSql = $"SELECT * FROM Item";
-            int recordsRetrieved = 0;
-            _dataAccess.ExecuteSQLStatement(sSql, ref recordsRetrieved);
-            // TODO parse DataTable to objects
-            return resultList;
+            try
+            {
+                List<ItemViewModel> resultList = new List<ItemViewModel>();
+                string sSql = $"SELECT * FROM Item";
+                int recordsRetrieved = 0;
+                _dataAccess.ExecuteSQLStatement(sSql, ref recordsRetrieved);
+                // TODO parse DataTable to objects
+                return resultList;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"There was an issue with communicating with the database, trying to get {itemViewModel.Name}. Message: {ex.Message}");
+            }
         }
     }
 }

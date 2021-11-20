@@ -28,6 +28,9 @@ namespace GroupProject.Items
         /// </summary>
         public ObservableCollection<ItemViewModel> Items { get; set; }
 
+        /// <summary>
+        /// An item onchanged handler
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
@@ -37,6 +40,9 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Selected item on the page
+        /// </summary>
         private ItemViewModel _selectedItem;
         public ItemViewModel SelectedItem 
         {
@@ -48,6 +54,10 @@ namespace GroupProject.Items
             } 
         }
 
+        /// <summary>
+        /// Constructor for other windows to pass info into the window
+        /// </summary>
+        /// <param name="items"></param>
         public wndItems(List<ItemViewModel> items)
         {
             Items = new ObservableCollection<ItemViewModel>(items);
@@ -55,6 +65,11 @@ namespace GroupProject.Items
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Changes the selected item depending on what Row is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedItem = ItemsGrid.SelectedItem as ItemViewModel;
