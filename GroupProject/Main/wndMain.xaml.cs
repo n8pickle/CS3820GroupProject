@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GroupProject;
+using GroupProject.Items;
+using GroupProject.Model;
 
 namespace GroupProject
 {
@@ -25,5 +27,22 @@ namespace GroupProject
         {
             InitializeComponent();
         }
+
+        ///This is a onclick to go the the edit items page
+/*        private void GoToEditItems_Click(object sender, RoutedEventArgs e)
+        {
+            List<ItemViewModel> items = new List<ItemViewModel>
+            {
+                new ItemViewModel
+                {
+                    Code = "A",
+                    Name = "Diamond Bracelet",
+                    Price = 499.99,
+                    Description = "The perfect gift for your GF!"
+                }
+            };
+            wndItems windowItems = new wndItems(items);
+            windowItems.Show();
+        }*/
     }
 }
