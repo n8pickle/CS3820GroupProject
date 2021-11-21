@@ -13,8 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GroupProject;
-using GroupProject.Items;
-using GroupProject.Model;
 
 namespace GroupProject
 {
@@ -23,26 +21,15 @@ namespace GroupProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        // The main window should allow the user to create new invoices, edit existing invoices, or delete existing invoices.
+        // There is a Menu control box in the top left corner to navigate to the search and items pages.
+        // There are buttons that will connect the logic and SQL classes for the main window.
+        // Button click events are passed to the logic which will execute the SQL statement.
+        // The items page will populate the combo box with items.
+        // Refresh items in combo box when window visibility changes.
         public MainWindow()
         {
             InitializeComponent();
         }
-
-        ///This is a onclick to go the the edit items page
-/*        private void GoToEditItems_Click(object sender, RoutedEventArgs e)
-        {
-            List<ItemViewModel> items = new List<ItemViewModel>
-            {
-                new ItemViewModel
-                {
-                    Code = "A",
-                    Name = "Diamond Bracelet",
-                    Price = 499.99,
-                    Description = "The perfect gift for your GF!"
-                }
-            };
-            wndItems windowItems = new wndItems(items);
-            windowItems.Show();
-        }*/
     }
 }
