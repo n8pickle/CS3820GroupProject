@@ -9,19 +9,44 @@
     <Grid>
         <DataGrid x:Name="Invoicedg" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="285" Margin="10,76,0,0" VerticalAlignment="Top" Width="774">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Invoice Number" Width=".3*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Invoice Date" Width=".3*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Total Charge" Width=".3*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Invoice Number" Width=".3*" Binding="{Binding Path = Num}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Invoice Date" Width=".3*" Binding="{Binding Path = Date}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Total Charge" Width=".3*" Binding="{Binding Path = Total}"></DataGridTextColumn>
             </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--We are using a DataGrid to show the details but this could have been other controls like a ListBox.
+                                        Notice that this DataGrid is bound to the collection lstCompanies which it accesses via the property Companies-->
+                            <DataGrid AutoGenerateColumns="False" Grid.Column="1" ItemsSource="{Binding ConnectedItems}" IsEnabled="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Path= code}" Header="Item Code" Width="60" />
+                                    <DataGridTextColumn Binding="{Binding Path= desc}" Header="Description" Width="170" />
+                                    <DataGridTextColumn Binding="{Binding Path= cost}" Header="Cost" Width="70" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            
         </DataGrid>
         <Label x:Name="InvNumLbl" Content="Invoice Number:" HorizontalAlignment="Left" Margin="20,27,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="InvNumCmb" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="InvNumCmb_SelectionChanged"/>
+        <ComboBox x:Name="InvNumCmb" HorizontalAlignment="Left" Margin="123,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
         <Label x:Name="InvDateLbl" Content="Invoice Date:" HorizontalAlignment="Left" Margin="248,30,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="InvDateCmb" HorizontalAlignment="Left" Margin="331,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="InvDateCmb_SelectionChanged"/>
+        <ComboBox x:Name="InvDateCmb" HorizontalAlignment="Left" Margin="331,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
         <Label x:Name="InvTotalLbl" Content="Total Charge: " HorizontalAlignment="Left" Margin="456,27,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="543,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
+        <ComboBox x:Name="TotalsCmb" HorizontalAlignment="Left" Margin="543,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
         <Button x:Name="ClearBtn" Content="Clear Selection" HorizontalAlignment="Left" Margin="668,33,0,0" VerticalAlignment="Top" Width="116" Click="ClearBtn_Click"/>
         <Button x:Name="SelectBtn" Content="Select Invoice" HorizontalAlignment="Left" Margin="683,379,0,0" VerticalAlignment="Top" Width="101" Height="31" Click="SelectBtn_Click"/>
+        <Label x:Name="errorLbl" Content=" " HorizontalAlignment="Left" Margin="20,366,0,0" VerticalAlignment="Top" FontWeight="Bold" Background="White" Foreground="#FFE72323"/>
 
     </Grid>
 </Window>

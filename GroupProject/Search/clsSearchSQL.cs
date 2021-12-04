@@ -66,7 +66,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "#:";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -214,7 +214,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices;";
+                curQuery = "SELECT DISTINCT TotalCost FROM Invoices ORDER BY TotalCost DESC;";
                 return curQuery;
             }
             catch (Exception ex)
@@ -231,7 +231,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceDate FROM Invoices;";
+                curQuery = "SELECT DISTINCT InvoiceDate FROM Invoices;";
                 return curQuery;
             }
             catch (Exception ex)
@@ -323,7 +323,7 @@ namespace GroupProject.Search
             try
             {
                 curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
-                            " AND InvoiceDate = #" + date + "#;";
+                            " AND InvoiceDate = #" + date + "# ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -343,7 +343,7 @@ namespace GroupProject.Search
             try
             {
                 curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
-                            ";";
+                            " ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -362,7 +362,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = #" + date + "#;";
+                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = #" + date + "# ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -382,7 +382,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE TotalCost = " + charge +
                             " AND InvoiceDate = #" + date + "#;";
 
                 return curQuery;
@@ -402,7 +402,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE TotalCost = " + charge +
                             ";";
 
                 return curQuery;
@@ -422,7 +422,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE InvoiceDate = #" + date + "#;";
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -433,5 +433,21 @@ namespace GroupProject.Search
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Get the items connected to a particular invoice
+        public string getConnectedItems(string ID)
+        {
+            try
+            {
+                curQuery = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost " +
+                            " FROM ItemDesc " +
+                            "INNER JOIN LineItems " +
+                            "ON ItemDesc.Itemcode = LineItems.ItemCode " +
+                            "WHERE LineItems.InvoiceNum = "+ ID +";";
+                return curQuery;
+            }
+            catch (Exception ex) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
     }
 }
