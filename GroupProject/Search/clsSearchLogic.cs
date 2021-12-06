@@ -15,16 +15,29 @@ namespace GroupProject.Search
     /// </summary>
     public class conItem {
 
-        //Function to set the class variables for an item
+        /// <summary>
+        /// Function to set the class variables for an item
+        /// </summary>
+        /// <param name="_code">Item Code</param>
+        /// <param name="_desc">Item Description</param>
+        /// <param name="_cost">Item Cost</param>
         public conItem(string _code, string _desc, string _cost) {
             code = _code;
             desc = _desc;
             cost = "$" + _cost;
         }
 
-        // Hold the variables associated with an item
+        /// <summary>
+        /// Item Code with this contained item
+        /// </summary>
         public string code { get; set; }
+        /// <summary>
+        /// Item Description for this contained item
+        /// </summary>
         public string desc { get; set; }
+        /// <summary>
+        /// Item cost for this contained item
+        /// </summary>
         public string cost { get; set; }
     }
 
@@ -34,21 +47,39 @@ namespace GroupProject.Search
     /// </summary>
     public class invRecord {
 
-        //Constructor for this class
+        /// <summary>
+        /// Constructor for this class
+        /// </summary>
+        /// <param name="passNum">Invoice Num for this record</param>
+        /// <param name="passDate">Invoice Date for this Record</param>
+        /// <param name="passTotal">Invoice Total for this Record</param>
         public invRecord(string passNum, string passDate, string passTotal) {
             Num = passNum;
             Date = passDate;
             Total = "$" + passTotal;
         }
 
-        // Variables for information associated
+        /// <summary>
+        /// Invoice Num for this Record
+        /// </summary>
         public string Num { get; set; }
+        /// <summary>
+        /// Invoice Date for this record
+        /// </summary>
         public string Date { get; set; }
+        /// <summary>
+        /// Invoice total for this record
+        /// </summary>
         public string Total { get; set; }
 
+        /// <summary>
+        /// Items that this Record is associated with
+        /// </summary>
         public List<conItem> conItems = new List<conItem>();
-      
-        // Gets or sets the list of connected items
+
+        /// <summary>
+        /// Gets or sets the list of connected items
+        /// </summary>
         public List<conItem> ConnectedItems
         {
             get {
@@ -66,28 +97,44 @@ namespace GroupProject.Search
     public class clsSearchLogic
     {
 
-        // class object to hold and construct all sql queries
+        /// <summary>
+        /// class object to hold and construct all sql queries
+        /// </summary>
         clsSearchSQL query = new clsSearchSQL();
 
-        // class object to handle executing SQL code
+        /// <summary>
+        /// class object to handle executing SQL code
+        /// </summary>
         clsDataAccess db = new clsDataAccess();
 
-        // dataset to hold what's returned from sql executions
+        /// <summary>
+        /// dataset to hold what's returned from sql executions
+        /// </summary>
         DataSet ds = new DataSet();
 
-        // reference return value for SQL executions
+        /// <summary>
+        /// reference return value for SQL executions
+        /// </summary>
         int ret = 0;
 
-        // collection to hold invoice numbers
+        /// <summary>
+        /// collection to hold invoice numbers
+        /// </summary>
         public ObservableCollection<string> invoiceNums = new ObservableCollection<string>();
 
-        // collection to hold invoice dates
+        /// <summary>
+        /// collection to hold invoice dates
+        /// </summary>
         public ObservableCollection<string> invoiceDates = new ObservableCollection<string>();
 
-        // collection to hold invoice totals
+        /// <summary>
+        /// collection to hold invoice totals
+        /// </summary>
         public ObservableCollection<string> invoiceTotals = new ObservableCollection<string>();
 
-        // collection to hold the actual invoice records
+        /// <summary>
+        /// collection to hold the actual invoice records
+        /// </summary>
         public ObservableCollection<invRecord> Records = new ObservableCollection<invRecord>();
 
         /// <summary>
@@ -97,7 +144,7 @@ namespace GroupProject.Search
         /// <param name="numIndex"> index for the invoice number from the UI </param>
         /// <param name="dateIndex">index for the invoice date from the UI</param>
         /// <param name="totalIndex">index for the invoice date from the UI</param>
-        /// <returns></returns>
+        /// <returns>The Collection of Invoices</returns>
         public ObservableCollection<invRecord> GetInvoices(int numIndex, int dateIndex, int totalIndex) {
             try
             {
@@ -191,7 +238,7 @@ namespace GroupProject.Search
         /// return the id of the record selected in the window
         /// </summary>
         /// <param name="index"> index in the list of invoice records </param>
-        /// <returns></returns>
+        /// <returns>The ID of the Invoice Selected</returns>
         public string finalSelection(int index)
         {
             try {
@@ -226,8 +273,8 @@ namespace GroupProject.Search
         /// <summary>
         /// used to filter the numbers collection using the indexes of the other 2 collections
         /// </summary>
-        /// <param name="d"></param>
-        /// <param name="t"></param>
+        /// <param name="d">Date Index</param>
+        /// <param name="t">Total Charge Index</param>
         public void getNums(int d, int t) {
             try
             {
@@ -235,21 +282,26 @@ namespace GroupProject.Search
                 invoiceNums.Clear();
                 ret = 0;
 
+
                 if (t == -1 && d == -1)
                 {
+                    //No total or date chosen yet
                     ds = db.ExecuteSQLStatement(query.getNumbers(), ref ret);
                 }
                 else if (t == -1 && d != -1)
                 {
+                    // to total, but we have a date
                     ds = db.ExecuteSQLStatement(query.getNumWithDate(invoiceDates[d]), ref ret);
                 }
                 else if (t != -1 && d == -1)
                 {
+                    // no date, but we have a total
                     ds = db.ExecuteSQLStatement(query.getNumWithCharge(invoiceTotals[t]), ref ret);
                    
                 }
                 else if (t != -1 && d != -1)
                 {
+                    // we have both a date and total chosen
                     ds = db.ExecuteSQLStatement(query.getNumWithChargeAndDate(invoiceTotals[t],invoiceDates[d]), ref ret);
                 }
                 
@@ -270,8 +322,8 @@ namespace GroupProject.Search
         /// <summary>
         /// Filter the list of dates using the indexes of the other two lists
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="t"></param>
+        /// <param name="n">Invoice Num index</param>
+        /// <param name="t">Invoice total index</param>
         public void getDates(int n, int t)
         {
             try
@@ -282,18 +334,22 @@ namespace GroupProject.Search
                 
                 if (n == -1 && t == -1)
                 {
+                    //No Num or total chosen
                     ds = db.ExecuteSQLStatement(query.getDates(), ref ret);
                 }
                 else if (n == -1 && t != -1)
                 {
+                    // No num, but we have a total
                     ds = db.ExecuteSQLStatement(query.getDatesWithCharge(invoiceTotals[t]), ref ret);
                 }
                 else if (n != -1 && t == -1)
                 {
+                    // no total, but we have a num
                     ds = db.ExecuteSQLStatement(query.getDatesWithNum(invoiceNums[n]), ref ret);
                 }
                 else if (n != -1 && t != -1)
                 {
+                    // both a num and a total have been chosen
                     ds = db.ExecuteSQLStatement(query.getDatesWithNumAndCharge(invoiceNums[n],invoiceTotals[t]), ref ret);
                 }
 
@@ -312,8 +368,8 @@ namespace GroupProject.Search
         /// <summary>
         /// refine totals based on the indexes of the other collections
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="d"></param>
+        /// <param name="n">Num index</param>
+        /// <param name="d">Date index</param>
         public void getTotals(int n, int d)
         {
             try
@@ -321,15 +377,19 @@ namespace GroupProject.Search
                 invoiceTotals.Clear();
                 ret = 0;
                 if (n == -1 && d == -1) {
+                    // No num or date chosen
                     ds = db.ExecuteSQLStatement(query.getCharges(), ref ret);
                 }
                 else if (n == -1 && d != -1) {
+                    // No num, but we have a date
                     ds = db.ExecuteSQLStatement(query.getChargeWithDate(invoiceDates[d]), ref ret);
                 }
                 else if (n != -1 && d == -1) {
+                    // No date chosen, but we have a num
                     ds = db.ExecuteSQLStatement(query.getChargeWithNum(invoiceNums[n]), ref ret);
                 }
                 else if (n != -1 && d != -1) {
+                    // num and date have both been chosen
                     ds = db.ExecuteSQLStatement(query.getChargeWithNumAndDate(invoiceNums[n],invoiceDates[d]), ref ret);
                 }
 

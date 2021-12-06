@@ -22,14 +22,17 @@ namespace GroupProject.Search
     /// </summary>
     public partial class wndSearch : Window
     {
-        //This variable will be used as the holder for the value selected by the user
-        // Main window will access it with the window object it has for the search window
-        // Like wndSearch ser = new wndSearch()
-        // ...
-        // (After search closes) > ser.SelectedID
-        // That will access this field
+        /// <summary>
+        /// This variable will be used as the holder for the value selected by the user, 
+        /// By default is an empty string (""), which will indicate no ID was selected
+        /// Main window will access it with the window object it has for the search window
+        /// Access like [wndSearch Object].SelectedID
+        /// </summary>
         public string SelectedID { get; set; }
-        //This is the class object that will handle all business logic for this window
+
+        /// <summary>
+        /// This is the class object that will handle all business logic for this window
+        /// </summary>
         clsSearchLogic log = new clsSearchLogic();
 
         /// <summary>
@@ -83,8 +86,12 @@ namespace GroupProject.Search
             }
         }
 
-        // This won't do anything to the UI elements, they're bound to observable collections, this will simply reset all observable collections
-        // to their initial state
+        /// <summary>
+        /// This won't do anything to the UI elements, they're bound to observable collections, this will simply reset all observable collections
+        /// to their initial state
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearBtn_Click(object sender, RoutedEventArgs e)
         {
             try

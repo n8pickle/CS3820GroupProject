@@ -433,7 +433,11 @@ namespace GroupProject.Search
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Get the items connected to a particular invoice
+        /// <summary>
+        /// Get the items connected to a particular invoice
+        /// </summary>
+        /// <param name="ID">Invoice ID to match</param>
+        /// <returns>Query that will return the Connected items</returns>
         public string getConnectedItems(string ID)
         {
             try
