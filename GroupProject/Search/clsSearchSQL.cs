@@ -26,14 +26,16 @@ namespace GroupProject.Search
         /// Gets all of the invoices, meant to be called on initial load and on clear selection
         /// </summary>
         /// <returns>Query string to select all invoices</returns>
-        public string getAll() {
+        public string getAll()
+        {
             try
             {
                 curQuery = "SELECT * FROM Invoices;";
 
                 return curQuery;
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
@@ -66,7 +68,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "#:";
+                curQuery = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -85,7 +87,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT * FROM Invoices WHERE TotalCost = " +charge+ ";";
+                curQuery = "SELECT * FROM Invoices WHERE TotalCost = " + charge + ";";
 
                 return curQuery;
             }
@@ -193,7 +195,8 @@ namespace GroupProject.Search
         /// Query to get all the InvoiceNumbers in the table, meant to be used to fill the combobox on load
         /// </summary>
         /// <returns></returns>
-        public string getNumbers() {
+        public string getNumbers()
+        {
             try
             {
                 curQuery = "SELECT InvoiceNum FROM Invoices;";
@@ -214,7 +217,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices;";
+                curQuery = "SELECT DISTINCT TotalCost FROM Invoices ORDER BY TotalCost DESC;";
                 return curQuery;
             }
             catch (Exception ex)
@@ -231,7 +234,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceDate FROM Invoices;";
+                curQuery = "SELECT DISTINCT InvoiceDate FROM Invoices;";
                 return curQuery;
             }
             catch (Exception ex)
@@ -241,7 +244,7 @@ namespace GroupProject.Search
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         /*                       ---------BREAK ------------                                */
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,14 +252,14 @@ namespace GroupProject.Search
         /// From any of the 3 comboboxes, any blank comboboxes will only contain values associated with the values chosen
         ///
 
-        
+
         /// <summary>
         /// Get all dates matching InvoiceNum and TotalCost
         /// </summary>
         /// <param name="num">InvoiceNum to Match To</param>
         /// <param name="charge">TotalCost to Match to</param>
         /// <returns></returns>
-        public string getDatesWithNumAndCharge(string num,string charge) 
+        public string getDatesWithNumAndCharge(string num, string charge)
         {
             try
             {
@@ -323,7 +326,7 @@ namespace GroupProject.Search
             try
             {
                 curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
-                            " AND InvoiceDate = #" + date + "#;";
+                            " AND InvoiceDate = #" + date + "# ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -343,7 +346,7 @@ namespace GroupProject.Search
             try
             {
                 curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + num +
-                            ";";
+                            " ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -362,7 +365,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = #" + date + "#;";
+                curQuery = "SELECT TotalCost FROM Invoices WHERE InvoiceDate = #" + date + "# ORDER BY TotalCost DESC;";
 
                 return curQuery;
             }
@@ -382,7 +385,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE TotalCost = " + charge +
                             " AND InvoiceDate = #" + date + "#;";
 
                 return curQuery;
@@ -402,7 +405,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE TotalCost = " + charge +
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE TotalCost = " + charge +
                             ";";
 
                 return curQuery;
@@ -422,7 +425,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT InvoiceNum FROM Invoice WHERE InvoiceDate = #" + date + "#;";
+                curQuery = "SELECT InvoiceNum FROM Invoices WHERE InvoiceDate = #" + date + "#;";
 
                 return curQuery;
             }
@@ -433,5 +436,26 @@ namespace GroupProject.Search
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Get the items connected to a particular invoice
+        /// </summary>
+        /// <param name="ID">Invoice ID to match</param>
+        /// <returns>Query that will return the Connected items</returns>
+        public string getConnectedItems(string ID)
+        {
+            try
+            {
+                curQuery = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost " +
+                            " FROM ItemDesc " +
+                            "INNER JOIN LineItems " +
+                            "ON ItemDesc.Itemcode = LineItems.ItemCode " +
+                            "WHERE LineItems.InvoiceNum = " + ID + ";";
+                return curQuery;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
     }
 }

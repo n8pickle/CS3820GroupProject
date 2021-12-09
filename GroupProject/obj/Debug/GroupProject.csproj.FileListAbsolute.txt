@@ -38,3 +38,14 @@ C:\Code\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.g.resources
 C:\Code\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.Properties.Resources.resources
 C:\Code\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
 C:\Code\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.csproj.AssemblyReference.cache
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\WhistlerBlue.baml
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\Items\wndItems.g.cs
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\Main\wndMain.g.cs
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\Search\wndSearch.g.cs
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\App.g.cs
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject_Content.g.cs
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject_MarkupCompile.cache
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject_MarkupCompile.lref
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.exe
+C:\Users\Matt\OneDrive\Documents\GitHub\CS3820GroupProject\GroupProject\obj\Debug\GroupProject.pdb
