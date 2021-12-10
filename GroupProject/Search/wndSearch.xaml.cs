@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GroupProject;
+using GroupProject.Model;
 
 namespace GroupProject.Search
 {
@@ -29,6 +30,11 @@ namespace GroupProject.Search
         /// Access like [wndSearch Object].SelectedID
         /// </summary>
         public string SelectedID { get; set; }
+
+        /// <summary>
+        /// The selected Invoice Number
+        /// </summary>
+        public int InvoiceNum { get; set; }
 
         /// <summary>
         /// This is the class object that will handle all business logic for this window
@@ -121,9 +127,12 @@ namespace GroupProject.Search
                 if (Invoicedg.SelectedIndex == -1)
                 {
                     errorLbl.Content = "No Record Selected, Please Select A Record.";
+                    InvoiceNum = -1;
                     return;
                 }
 
+                InvoiceModel invoice = (InvoiceModel)Invoicedg.SelectedCells[0].Item;
+                InvoiceNum = invoice.InvoiceNum;
 
                 errorLbl.Content = " ";
 
@@ -138,6 +147,25 @@ namespace GroupProject.Search
                       MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
+        }
+
+        /// <summary>
+        /// Return to the Main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                InvoiceNum = -1;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>

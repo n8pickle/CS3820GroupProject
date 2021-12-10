@@ -29,6 +29,11 @@ namespace GroupProject.Items
         public ObservableCollection<ItemViewModel> Items { get; set; }
 
         /// <summary>
+        /// List of items from the ItemViewModel
+        /// </summary>
+        List<ItemViewModel> items;
+
+        /// <summary>
         /// An item onchanged handler
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -58,8 +63,9 @@ namespace GroupProject.Items
         /// Constructor for other windows to pass info into the window
         /// </summary>
         /// <param name="items"></param>
-        public wndItems(List<ItemViewModel> items)
+        public wndItems()
         {
+            items = new List<ItemViewModel>();
             Items = new ObservableCollection<ItemViewModel>(items);
             DataContext = this;
             InitializeComponent();
