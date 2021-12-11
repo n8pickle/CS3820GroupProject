@@ -24,6 +24,16 @@ namespace GroupProject.Main
         /// List of Invoice Objects 
         /// </summary>
         List<InvoiceModel> invoiceResult;
+
+        /// <summary>
+        /// List of item objects
+        /// </summary>
+        List<ItemViewModel> itemResult;
+
+        /// <summary>
+        /// List of interface item/line item objects
+        /// </summary>
+        List<LineItemDisplayContainer> displayList;
         /// <summary>
         /// List of Item Objects
         /// </summary>
@@ -74,6 +84,62 @@ namespace GroupProject.Main
             }
             return itemsResult;
         }
+
+        public List<LineItemDisplayContainer> getAllLineItems()
+        {
+            try
+            {
+                DataSet dsLineItems = new DataSet();
+                DataSet dsItems = new DataSet();
+                DataSet dsItemDesc = new DataSet();
+                DataSet dsItemCost = new DataSet();
+
+                int iRef = 0;
+                //interfaceResults = new List<InterfaceItemLineItems>();
+                lineItemsResult = new List<LineItemsModel>();
+                itemsResult = new List<ItemViewModel>();
+
+                displayList = new List<LineItemDisplayContainer>();
+
+                var query = sql.SelectAllLineItems();
+                var query2 = sql.SelectItems();
+
+                //InterfaceItemLineItems intItemLineItems;
+                //LineItemsModel lineItem;
+                //ItemViewModel item;
+
+                dsLineItems = db.ExecuteSQLStatement(query, ref iRef);
+                dsItems = db.ExecuteSQLStatement(query2, ref iRef);
+
+                LineItemDisplayContainer displayLineItem;
+
+                for (int i = 0; i < dsLineItems.Tables[0].Rows.Count; i++)
+                {
+                    displayLineItem = new LineItemDisplayContainer();
+                    displayLineItem.InvoiceNum = Convert.ToInt32(dsLineItems.Tables[0].Rows[i][0].ToString());
+                    displayLineItem.LineItemNum = Convert.ToInt32(dsLineItems.Tables[0].Rows[i][1].ToString());
+                    displayLineItem.Code = dsLineItems.Tables[0].Rows[i][2].ToString();
+
+                    var queryItemDesc = sql.GetItemDesc(displayLineItem.Code);
+                    var queryItemCost = sql.GetItemCost(displayLineItem.Code);
+
+                    dsItemDesc = db.ExecuteSQLStatement(queryItemDesc, ref iRef);
+                    dsItemCost = db.ExecuteSQLStatement(queryItemCost, ref iRef);
+
+                    displayLineItem.ItemDesc = dsItemDesc.Tables[0].Rows[0][0].ToString();
+                    displayLineItem.ItemPrice = dsItemCost.Tables[0].Rows[0][0].ToString();
+
+                    displayList.Add(displayLineItem);
+                }
+                return displayList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
         /// <summary>
         /// Runs the provided SQL string and fills string up with result
         /// </summary>
@@ -123,7 +189,7 @@ namespace GroupProject.Main
                     li = new LineItemsModel();
                     li.InvoiceNum = Convert.ToInt32(ds.Tables[0].Rows[i][0]);
                     li.LineItemNum = Convert.ToInt32(ds.Tables[0].Rows[i][1]);
-                    li.ItemCode = ds.Tables[0].Rows[i][2].ToString();
+                    li.Code = ds.Tables[0].Rows[i][2].ToString();
 
                     lineItemsResult.Add(li);
 
@@ -213,6 +279,7 @@ namespace GroupProject.Main
                     invoice = new InvoiceModel();
                     invoice.InvoiceNum = Convert.ToInt32(ds.Tables[0].Rows[i][0]);
                     invoice.InvoiceDate = ds.Tables[0].Rows[i][1].ToString();
+                    // TODO: description and cost
                     invoice.TotalCost = Convert.ToInt32(ds.Tables[0].Rows[i][2]);
 
                     invoiceResult.Add(invoice);
@@ -228,6 +295,43 @@ namespace GroupProject.Main
             return invoiceResult;
 
         }
+
+        /*
+        public List<InvoiceModel> GetAllItems()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                int iRef = 0;
+                var query = sql.SelectAllItems();
+                itemsResult = new List<ItemViewModel>();
+
+                ItemViewModel itemsResult;
+
+                ds = db.ExecuteSQLStatement(query, ref iRef);
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    itemsResult = new ItemViewModel();
+                    itemsResult.Code = Convert.ToInt32(ds.Tables[0].Rows[i][0]);
+                    itemsResult.Description = ds.Tables[0].Rows[i][1].ToString();
+                    // TODO: description and cost
+                    itemsResult.Price = Convert.ToInt32(ds.Tables[0].Rows[i][2]);
+
+                    itemsResult.Add(itemsResult);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+            return invoiceResult;
+
+        }
+        */
         #endregion
         #region Insert Logic
         /// <summary>

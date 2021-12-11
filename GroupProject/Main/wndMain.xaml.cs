@@ -45,7 +45,7 @@ namespace GroupProject
         /// <summary>
         /// Main Logic object
         /// </summary>
-        clsMainLogic ml;
+        clsMainLogic clsMainLogic;
 
         /// <summary>
         /// Main SQL object
@@ -62,6 +62,7 @@ namespace GroupProject
         /// </summary>
         public string InvoiceNum;
 
+
         /// <summary>
         /// Generate an ID for new Invoices
         /// </summary>
@@ -70,7 +71,11 @@ namespace GroupProject
         /// <summary>
         /// Create a date for a new Invoice
         /// </summary>
-        private string invoiceDate;
+        public string InvoiceDate;
+
+        public string ItemDesc;
+
+        public string ItemPrice;
 
         /// <summary>
         /// Current Selected Item
@@ -101,13 +106,19 @@ namespace GroupProject
                 InitializeComponent();
                 Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-                ml = new clsMainLogic();
+                clsMainLogic = new clsMainLogic();
                 //Populate Items ComboBox
-                cmbInvoiceItem.ItemsSource = ml.getItems().Select(a => a.Description);
+                cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
 
                 //Populate DataGrid with Invoices
-                List<InvoiceModel> invoice = ml.GetAllInvoices();
-                dgInvoice.ItemsSource = invoice;
+                //List<InvoiceModel> invoice = clsMainLogic.GetAllInvoices();
+                //dgInvoice.ItemsSource = invoice;
+
+                List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
+                dgInvoice.ItemsSource = item;
+
+                btnEdit.IsEnabled = false;
+                btnDelete.IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -141,7 +152,7 @@ namespace GroupProject
                     this.Show();
 
                     cmbInvoiceItem.ClearValue(ItemsControl.ItemsSourceProperty);
-                    cmbInvoiceItem.ItemsSource = ml.getItems().Select(a => a.Description);
+                    cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
                 }
                 if (ctrlSearch.IsChecked == true)
                 {
@@ -286,23 +297,27 @@ namespace GroupProject
                 dpInvoiceDate.IsEnabled = true;
                 txtTotalCost.IsEnabled = true;
                 cmbInvoiceItem.IsEnabled = true;
-               // cmbxItemsAdded.IsEnabled = true;
-
-                //Enable Save button
+                btnAddItem.IsEnabled = true;
                 btnSave.IsEnabled = true;
+                btnEdit.IsEnabled = true;
+                btnDelete.IsEnabled = true;
 
                 //Insert Current Date
                 dpInvoiceDate.SelectedDate = DateTime.Today;
-                ml.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
+                clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
 
                 //Generate a new Invoice ID
-                newID = ml.GenerateInvoiceID();
+                newID = clsMainLogic.GenerateInvoiceID();
 
                 //Insert Invoice ID onto Page
                 txtInvoiceNum.Text = newID;
 
                 //Set variable to Current InvoiceNum
                 InvoiceNum = newID;
+
+                dgInvoice.Items.Clear();
+                total = 0;
+                txtInvoiceNum.Text = "TBD";
 
             }
             catch (Exception ex)
@@ -380,13 +395,13 @@ namespace GroupProject
                 InvoiceModel invoice = (InvoiceModel)dgInvoice.SelectedItem;
                 string invoiceNum = invoice.InvoiceNum.ToString();
 
-                ml.DeleteLineItems(invoiceNum);
-                ml.DeleteInvoice(invoiceNum);
+                clsMainLogic.DeleteLineItems(invoiceNum);
+                clsMainLogic.DeleteInvoice(invoiceNum);
 
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
 
                 //Populate DataGrid with Invoices
-                List<InvoiceModel> refresh = ml.GetAllInvoices();
+                List<InvoiceModel> refresh = clsMainLogic.GetAllInvoices();
                 dgInvoice.ItemsSource = refresh;
                 //disable Delete and Edit Buttons
                 btnDelete.IsEnabled = false;
@@ -411,13 +426,13 @@ namespace GroupProject
             {
                 // TODO: if !isEditing
                 string t = total.ToString();
-                ml.UpdateInvoiceTotal(InvoiceNum, t);
+                clsMainLogic.UpdateInvoiceTotal(InvoiceNum, t);
 
                 //clear old data
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
 
                 //refresh the items in the data grid
-                List<InvoiceModel> invoice = ml.GetAllInvoices();
+                List<InvoiceModel> invoice = clsMainLogic.GetAllInvoices();
                 dgInvoice.ItemsSource = invoice;
 
                 txtInvoiceNum.Text = "TBD";
@@ -459,7 +474,7 @@ namespace GroupProject
 
 
                 /* TODO: WHITNEY */
-                addeditems = ml.getItems();
+                addeditems = clsMainLogic.getItems();
                 ItemViewModel item;
 
                 if (dpInvoiceDate.Text == "")
@@ -624,8 +639,14 @@ namespace GroupProject
         {
             try
             {
+                //ItemViewModel item = (ItemViewModel)dgInvoice.SelectedItem;
+                //string selectedCode = item.Code; // don't need this?
+                //int index = dgInvoice.SelectedIndex + 1;
+                //lblSelected.Content = "Item: " + item.description + " Line " + index;
+
                 InvoiceModel invoice = (InvoiceModel)dgInvoice.SelectedItem;
                 //clsItems items = mainLogic.
+                
                 if (invoice != null)
                 {
                     btnEdit.IsEnabled = true;
@@ -635,8 +656,9 @@ namespace GroupProject
                     InvoiceNum = invoice.InvoiceNum.ToString();
                     dpInvoiceDate.Text = invoice.InvoiceDate;
                     txtTotalCost.Text = "$ " + String.Format("{0:N2}", invoice.TotalCost.ToString());
-                    total = invoice.TotalCost;
+                    //total = invoice.TotalCost;
                 }
+                
 
             }
             catch (System.Exception ex)

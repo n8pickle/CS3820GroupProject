@@ -109,6 +109,12 @@ namespace GroupProject.Main
             return sSQL;
         }
 
+        // TODO: delte this
+        public string SelectAllLineItems()
+        {
+            return "SELECT InvoiceNum, LineItemNum, ItemCode FROM LineItems";
+        }
+        
         /// <summary>
         /// Select All Invoices
         /// </summary>

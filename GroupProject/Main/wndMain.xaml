@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Menu HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
+        <Menu HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" VerticalAlignment="Top" Width="80">
             <MenuItem Header="Menu" Click="MenuItem_Click">
                 <MenuItem x:Name="ctrlItems" Header="Items" IsCheckable="true"/>
                 <MenuItem x:Name="ctrlSearch" Header="Search" IsCheckable="true"/>
@@ -15,8 +15,10 @@
         </Menu>
         <DataGrid x:Name="dgInvoice" DataContext="items" HorizontalAlignment="Left" Height="234" Margin="331,123,0,0" VerticalAlignment="Top" SelectionChanged="dgInvoice_SelectionChanged" Width="432">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="colDesc" Header="Description" Binding="{Binding description}" Width="200"/>
-                <DataGridTextColumn x:Name="colCost" Header="Cost" Binding="{Binding cost}" Width="69"/>
+                <DataGridTextColumn Width="100" Header="Invoice Number" Binding="{Binding Path=InvoiceNum}"/>
+                <DataGridTextColumn Width="80" Header="Invoice Date" Binding="{Binding Path=InvoiceDate}"/>
+                <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Path=ItemDesc}" />
+                <DataGridTextColumn Width="100" Header="Price" Binding="{Binding Path=ItemPrice}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="btnNew" Content="New" HorizontalAlignment="Left" Margin="134,31,0,0" VerticalAlignment="Top" Width="75"/>

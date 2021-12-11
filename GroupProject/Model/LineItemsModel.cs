@@ -21,6 +21,6 @@ namespace GroupProject.Model
         /// <summary>
         /// The Item code for the transaction
         /// </summary>
-        public string ItemCode { get; set; }
+        public string Code { get; set; }
     }
 }

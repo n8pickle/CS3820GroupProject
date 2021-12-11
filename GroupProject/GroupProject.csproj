@@ -66,6 +66,7 @@
     <Compile Include="Items\wndItems.xaml.cs">
       <DependentUpon>wndItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\InterfaceItemLineItems.cs" />
     <Compile Include="Model\InvoiceModel.cs" />
     <Compile Include="Model\ItemViewModel.cs" />
     <Compile Include="Model\LineItemsModel.cs" />
