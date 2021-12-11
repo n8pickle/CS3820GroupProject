@@ -15,5 +15,15 @@ namespace GroupProject.Model
         public string ItemDesc { get; set; }
 
         public string ItemPrice { get; set; }
+
+        /// <summary>
+        /// The invoice date.
+        /// </summary>
+        public string InvoiceDate { get; set; }
+
+        /// <summary>
+        /// The total cost of the invoice.
+        /// </summary>
+        public int TotalCost { get; set; }
     }
 }

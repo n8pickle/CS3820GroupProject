@@ -170,8 +170,8 @@ namespace GroupProject
                     {
                         foreach (var item in dgInvoice.Items)
                         {
-                            InvoiceModel invoice = (InvoiceModel)item;
-                            if (invoice.InvoiceNum == num)
+                            LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)item;
+                            if (selectedItem.InvoiceNum == num)
                             {
                                 break;
                             }
@@ -392,8 +392,8 @@ namespace GroupProject
         {
             try
             {
-                InvoiceModel invoice = (InvoiceModel)dgInvoice.SelectedItem;
-                string invoiceNum = invoice.InvoiceNum.ToString();
+                LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)dgInvoice.SelectedItem;
+                string invoiceNum = selectedItem.InvoiceNum.ToString();
 
                 clsMainLogic.DeleteLineItems(invoiceNum);
                 clsMainLogic.DeleteInvoice(invoiceNum);
@@ -646,7 +646,7 @@ namespace GroupProject
                 //int index = dgInvoice.SelectedIndex + 1;
                 //lblSelected.Content = "Item: " + item.description + " Line " + index;
 
-                InvoiceModel invoice = (InvoiceModel)dgInvoice.SelectedItem;
+                LineItemDisplayContainer invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
                 //clsItems items = mainLogic.
                 
                 if (invoice != null)
