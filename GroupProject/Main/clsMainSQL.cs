@@ -14,8 +14,16 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string UpdateInvoices(string TotalCost, string InvoiceNum)
         {
-            string sSQL = "Update Invoices SET TotalCost = " + TotalCost + " WHERE InvoiceNum =  " + InvoiceNum;
-            return sSQL;
+            try
+            {
+                string sSQL = "Update Invoices SET TotalCost = " + TotalCost + " WHERE InvoiceNum =  " + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
         /// <summary>
         /// This will Delete Selected Items
@@ -23,8 +31,16 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string DeleteLineItems(string InvoiceNum)
         {
-            string sSQL = "DELETE FROM LineItems WHERE InvoiceNum = " + InvoiceNum;
-            return sSQL;
+            try
+            {
+                string sSQL = "DELETE FROM LineItems WHERE InvoiceNum = " + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
         /// <summary>
         /// This will Delete an Item From the Invoice through the LineItems DB
@@ -34,7 +50,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string DeleteItemFromInvoice(string invoiceNum, string itemCode)
         {
-            return String.Format("DELETE FROM LineItems WHERE InvoiceNum = {0} AND ItemCode = '{1}'", invoiceNum, itemCode);
+            try
+            {
+                return String.Format("DELETE FROM LineItems WHERE InvoiceNum = {0} AND ItemCode = '{1}'", invoiceNum, itemCode);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         /// <summary>
         /// This will Delete Selected Invoices
@@ -42,8 +66,16 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string DeleteInvoices(string InvoiceNum)
         {
-            string sSQL = "DELETE FROM Invoices WHERE InvoiceNum = " + InvoiceNum;
-            return sSQL;
+            try
+            {
+                string sSQL = "DELETE FROM Invoices WHERE InvoiceNum = " + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
         /// <summary>
         /// This will Insert a new Set of Items and Attach it to the corresponding InvoiceNum
@@ -51,9 +83,16 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string InsertLineItems(string InvoiceNum, string LineItemNum, string ItemCode)
         {
-            string sSQL = String.Format("INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) " +
-                "VALUES ('{0}', '{1}', '{2}')", InvoiceNum, LineItemNum, ItemCode);
-            return sSQL;
+            try
+            {
+                string sSQL = String.Format("INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) VALUES ('{0}', '{1}', '{2}')", InvoiceNum, LineItemNum, ItemCode);
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
         /// <summary>
         /// This will insert a new Invoice into the Database
@@ -61,9 +100,16 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string InsertInvoices(string InvoiceDate, string TotalCost)
         {
-            string sSQL = "INSERT INTO Invoices (InvoiceDate, TotalCost)" +
-                "VALUES (#" + InvoiceDate + "#, " + TotalCost + ")";
-            return sSQL;
+            try
+            {
+                string sSQL = "INSERT INTO Invoices (InvoiceDate, TotalCost) VALUES (#" + InvoiceDate + "#, " + TotalCost + ")";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -72,9 +118,17 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string SelectInvoice(string InvoiceNum)
         {
-            string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost " +
-                "FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
-            return sSQL;
+            try
+            {
+                string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost " +
+    "FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -83,9 +137,17 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string SelectItems()
         {
-            string sSQL = "SELECT ItemCode, ItemDesc, Cost " +
-                "FROM ItemDesc";
-            return sSQL;
+            try
+            {
+                string sSQL = "SELECT ItemCode, ItemDesc, Cost " +
+                    "FROM ItemDesc";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -94,7 +156,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string SelectAllItems()
         {
-            return "SELECT * FROM ItemDesc";
+            try
+            {
+                return "SELECT * FROM ItemDesc";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -103,16 +173,32 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string SelectLineItems(string InvoiceNum)
         {
-            string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode " +
-                "FROM LineItems " +
-                "WHERE InvoiceNum = {0}", InvoiceNum);
-            return sSQL;
+            try
+            {
+                string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode " +
+    "FROM LineItems " +
+    "WHERE InvoiceNum = {0}", InvoiceNum);
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         // TODO: delte this
         public string SelectAllLineItems()
         {
-            return "SELECT InvoiceNum, LineItemNum, ItemCode FROM LineItems";
+            try
+            {
+                return "SELECT InvoiceNum, LineItemNum, ItemCode FROM LineItems";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         
         /// <summary>
@@ -121,7 +207,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string SelectAllInvoices()
         {
-            return "SELECT * FROM Invoices";
+            try
+            {
+                return "SELECT * FROM Invoices";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -130,7 +224,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GenerateInvoiceID()
         {
-            return "SELECT MAX(InvoiceNum) FROM Invoices";
+            try
+            {
+                return "SELECT MAX(InvoiceNum) FROM Invoices";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         /// <summary>
         /// This will generate a Line Item Number via Invoice
@@ -139,7 +241,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GenerateLineItemNum(string invoiceNum)
         {
-            return "SELECT MAX(LineItemNum) FROM LineItems WHERE InvoiceNum = " + invoiceNum;
+            try
+            {
+                return "SELECT MAX(LineItemNum) FROM LineItems WHERE InvoiceNum = " + invoiceNum;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         /// <summary>
         /// This will return an ItemCode by Description
@@ -148,7 +258,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GetItemCode(string itemDesc)
         {
-            return "SELECT ItemCode FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+            try
+            {
+                return "SELECT ItemCode FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         /// <summary>
         /// This will Return the Item Cost by ItemCode
@@ -157,7 +275,15 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GetItemCost(string itemCode)
         {
-            return String.Format("SELECT Cost FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+            try
+            {
+                return String.Format("SELECT Cost FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         /// <summary>
         /// This will Return the Item Description
@@ -166,7 +292,14 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GetItemDesc(string itemCode)
         {
-            return String.Format("SELECT ItemDesc FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+            try
+            {
+                return String.Format("SELECT ItemDesc FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
     }
 
