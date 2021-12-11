@@ -32,11 +32,6 @@ namespace GroupProject.Search
         public string SelectedID { get; set; }
 
         /// <summary>
-        /// The selected Invoice Number
-        /// </summary>
-        public int InvoiceNum { get; set; }
-
-        /// <summary>
         /// This is the class object that will handle all business logic for this window
         /// </summary>
         clsSearchLogic log = new clsSearchLogic();
@@ -127,12 +122,8 @@ namespace GroupProject.Search
                 if (Invoicedg.SelectedIndex == -1)
                 {
                     errorLbl.Content = "No Record Selected, Please Select A Record.";
-                    InvoiceNum = -1;
                     return;
                 }
-
-                InvoiceModel invoice = (InvoiceModel)Invoicedg.SelectedCells[0].Item;
-                InvoiceNum = invoice.InvoiceNum;
 
                 errorLbl.Content = " ";
 
@@ -158,7 +149,6 @@ namespace GroupProject.Search
         {
             try
             {
-                InvoiceNum = -1;
                 this.Close();
             }
             catch (Exception ex)

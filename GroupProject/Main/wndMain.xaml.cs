@@ -162,12 +162,14 @@ namespace GroupProject
 
                     searchWindow.ShowDialog();
                     int num;
-                    num = searchWindow.InvoiceNum;
+                    string selectedID = searchWindow.SelectedID;
+                   
 
                     //find the invoice in the datagrid
                     int i = 0;
-                    if (num != -1)
+                    if (selectedID != "")
                     {
+                        num = Convert.ToInt32(selectedID);
                         foreach (var item in dgInvoice.Items)
                         {
                             LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)item;
@@ -188,144 +190,11 @@ namespace GroupProject
                 throw new Exception(ex.Message);
             }
         }
-        /// <summary>
-        /// Click on Search Button and it will navigate you to the 
-        /// Search Window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-       /* private void itemSearch_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                searchWindow = new wndSearch();
-
-                this.Hide();
-
-                searchWindow.ShowDialog();
-                int num;
-                num = searchWindow.InvoiceNum;
-
-                //find the invoice in the datagrid
-                int i = 0;
-                if (num != -1)
-                {
-                    foreach (var item in dgInvoice.Items)
-                    {
-                        InvoiceModel invoice = (InvoiceModel)item;
-                        if (invoice.InvoiceNum == num)
-                        {
-                            break;
-                        }
-                        i++;
-                    }
-
-                    dgInvoice.SelectedIndex = i;
-                }
-                this.Show();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-
-        } */
-
-        /// <summary>
-        /// Click on this button and it will navigate you to the Edit Items Window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /*private void itemItems_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                itemsWindow = new wndItems();
-
-                this.Hide();
-
-                itemsWindow.ShowDialog();
-
-                //Update all dropdowns to reflect any changes (dropdown.itemsSource =)
-
-                this.Show();
-
-                cmbInvoiceItem.ClearValue(ItemsControl.ItemsSourceProperty);
-                cmbInvoiceItem.ItemsSource = ml.getItems().Select(a => a.Description);
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-
-        }*/
-        /// <summary>
-        /// On Click Main Window Closes and Program Ends
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /*private void itemClose_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-
-        }*/
+        
         #endregion
 
         #region Buttons
-        /// <summary>
-        /// Insert data into Invoice DB
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Enable textboxes
-                isEditing = false;
-                txtInvoiceNum.IsEnabled = true;
-                dpInvoiceDate.IsEnabled = true;
-                txtTotalCost.IsEnabled = true;
-                cmbInvoiceItem.IsEnabled = true;
-                btnAddItem.IsEnabled = true;
-                btnSave.IsEnabled = true;
-                btnEdit.IsEnabled = true;
-                btnDelete.IsEnabled = true;
-
-                //Insert Current Date
-                dpInvoiceDate.SelectedDate = DateTime.Today;
-                clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
-
-                //Generate a new Invoice ID
-                newID = clsMainLogic.GenerateInvoiceID();
-
-                //Insert Invoice ID onto Page
-                txtInvoiceNum.Text = newID;
-
-                //Set variable to Current InvoiceNum
-                InvoiceNum = newID;
-
-                dgInvoice.Items.Clear();
-                total = 0;
-                txtInvoiceNum.Text = "TBD";
-
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
+        
         /// <summary>
         /// Edit an existing Invoice
         /// </summary>
@@ -695,5 +564,45 @@ namespace GroupProject
 
 
         #endregion
+
+        private void btnNew_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Enable textboxes
+                isEditing = false;
+                txtInvoiceNum.IsEnabled = true;
+                dpInvoiceDate.IsEnabled = true;
+                txtTotalCost.IsEnabled = true;
+                cmbInvoiceItem.IsEnabled = true;
+                btnAddItem.IsEnabled = true;
+                btnSave.IsEnabled = true;
+                btnEdit.IsEnabled = true;
+                btnDelete.IsEnabled = true;
+
+                //Insert Current Date
+                dpInvoiceDate.SelectedDate = DateTime.Today;
+                //clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
+
+                //Generate a new Invoice ID
+                newID = clsMainLogic.GenerateInvoiceID();
+
+                //Insert Invoice ID onto Page
+                txtInvoiceNum.Text = newID;
+
+                //Set variable to Current InvoiceNum
+                InvoiceNum = newID;
+
+                dgInvoice.Items.Clear();
+                total = 0;
+                txtInvoiceNum.Text = "TBD";
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
     }
 }
