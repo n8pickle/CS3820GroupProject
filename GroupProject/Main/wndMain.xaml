@@ -15,10 +15,12 @@
         </Menu>
         <DataGrid x:Name="dgInvoice" DataContext="items" HorizontalAlignment="Left" Height="234" Margin="331,123,0,0" VerticalAlignment="Top" SelectionChanged="dgInvoice_SelectionChanged" Width="432">
             <DataGrid.Columns>
+                <!--
                 <DataGridTextColumn Width="100" Header="Invoice Number" Binding="{Binding Path=InvoiceNum}"/>
                 <DataGridTextColumn Width="80" Header="Invoice Date" Binding="{Binding Path=InvoiceDate}"/>
                 <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Path=ItemDesc}" />
                 <DataGridTextColumn Width="100" Header="Price" Binding="{Binding Path=ItemPrice}" />
+                -->
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="btnNew" Content="New" HorizontalAlignment="Left" Margin="134,31,0,0" VerticalAlignment="Top" Width="75"/>

@@ -90,14 +90,14 @@ namespace GroupProject.Main
             try
             {
                 DataSet dsLineItems = new DataSet();
-                DataSet dsItems = new DataSet();
+                //DataSet dsItems = new DataSet();
                 DataSet dsItemDesc = new DataSet();
                 DataSet dsItemCost = new DataSet();
 
-                int iRef = 0;
-                //interfaceResults = new List<InterfaceItemLineItems>();
-                lineItemsResult = new List<LineItemsModel>();
-                itemsResult = new List<ItemViewModel>();
+                int iRet = 0;
+                
+                //lineItemsResult = new List<LineItemsModel>();
+                //itemsResult = new List<ItemViewModel>();
 
                 displayList = new List<LineItemDisplayContainer>();
 
@@ -108,8 +108,8 @@ namespace GroupProject.Main
                 //LineItemsModel lineItem;
                 //ItemViewModel item;
 
-                dsLineItems = db.ExecuteSQLStatement(query, ref iRef);
-                dsItems = db.ExecuteSQLStatement(query2, ref iRef);
+                dsLineItems = db.ExecuteSQLStatement(query, ref iRet);
+                //dsItems = db.ExecuteSQLStatement(query2, ref iRef);
 
                 LineItemDisplayContainer displayLineItem;
 
@@ -122,13 +122,19 @@ namespace GroupProject.Main
 
                     var queryItemDesc = sql.GetItemDesc(displayLineItem.Code);
                     var queryItemCost = sql.GetItemCost(displayLineItem.Code);
+                    
+                    if (queryItemDesc != "")
+                    {
+                        dsItemDesc = db.ExecuteSQLStatement(queryItemDesc, ref iRet);
+                        displayLineItem.ItemDesc = dsItemDesc.Tables[0].Rows[0][0].ToString();
+                    }
 
-                    dsItemDesc = db.ExecuteSQLStatement(queryItemDesc, ref iRef);
-                    dsItemCost = db.ExecuteSQLStatement(queryItemCost, ref iRef);
-
-                    displayLineItem.ItemDesc = dsItemDesc.Tables[0].Rows[0][0].ToString();
-                    displayLineItem.ItemPrice = dsItemCost.Tables[0].Rows[0][0].ToString();
-
+                    if (queryItemCost != "")
+                    {
+                        dsItemCost = db.ExecuteSQLStatement(queryItemCost, ref iRet);
+                        displayLineItem.ItemPrice = dsItemCost.Tables[0].Rows[0][0].ToString();
+                    }
+                    
                     displayList.Add(displayLineItem);
                 }
                 return displayList;

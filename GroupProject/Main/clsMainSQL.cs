@@ -157,7 +157,7 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GetItemCost(string itemCode)
         {
-            return String.Format("SELECT Cost FROM ItemDesc WHERE ItemCode = '{0}'", itemCode);
+            return String.Format("SELECT Cost FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
         }
         /// <summary>
         /// This will Return the Item Description
@@ -166,7 +166,7 @@ namespace GroupProject.Main
         /// <returns></returns>
         public string GetItemDesc(string itemCode)
         {
-            return String.Format("SELECT ItemDesc FROM ItemDesc WHERE ItemCode = '{0}'", itemCode);
+            return String.Format("SELECT ItemDesc FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
         }
     }
 

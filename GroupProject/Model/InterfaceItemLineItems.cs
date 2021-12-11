@@ -10,10 +10,10 @@ namespace GroupProject.Model
     {
         public string Code { get; set; }
         public int InvoiceNum { get; set; }
-        public int LineItemNum;
+        public int LineItemNum { get; set; }
 
-        public string ItemDesc;
+        public string ItemDesc { get; set; }
 
-        public string ItemPrice;
+        public string ItemPrice { get; set; }
     }
 }

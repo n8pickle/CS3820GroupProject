@@ -480,10 +480,12 @@ namespace GroupProject
                 if (dpInvoiceDate.Text == "")
                 {
                     MessageBox.Show("Please select a date.");
+                    return;
                 }
                 if (cmbInvoiceItem.SelectedItem == null)
                 {
                     MessageBox.Show("Please select an item.");
+                    return;
                 }
 
                 for (int i = 0; i < addeditems.Count; i++)
