@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GroupProject;
+using GroupProject.Model;
 
 namespace GroupProject.Search
 {
@@ -124,7 +125,6 @@ namespace GroupProject.Search
                     return;
                 }
 
-
                 errorLbl.Content = " ";
 
                 //get the id of the selected record and set it to the class variable
@@ -138,6 +138,24 @@ namespace GroupProject.Search
                       MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
+        }
+
+        /// <summary>
+        /// Return to the Main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>

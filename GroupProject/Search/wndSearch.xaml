@@ -47,6 +47,7 @@
         <Button x:Name="ClearBtn" Content="Clear Selection" HorizontalAlignment="Left" Margin="668,33,0,0" VerticalAlignment="Top" Width="116" Click="ClearBtn_Click"/>
         <Button x:Name="SelectBtn" Content="Select Invoice" HorizontalAlignment="Left" Margin="683,379,0,0" VerticalAlignment="Top" Width="101" Height="31" Click="SelectBtn_Click"/>
         <Label x:Name="errorLbl" Content=" " HorizontalAlignment="Left" Margin="20,366,0,0" VerticalAlignment="Top" FontWeight="Bold" Background="White" Foreground="#FFE72323"/>
+        <Button x:Name="btnCancel" Content="Main Menu" HorizontalAlignment="Left" Margin="562,379,0,0" VerticalAlignment="Top" Width="101" Height="31" Click="btnCancel_Click"/>
 
     </Grid>
 </Window>
