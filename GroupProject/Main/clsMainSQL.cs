@@ -301,6 +301,24 @@ namespace GroupProject.Main
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// This will Select and return Invoice Data from the DB
+        /// </summary>
+        /// <returns></returns>
+        public string GetInvoiceDate(string InvoiceNum)
+        {
+            try
+            {
+                string sSQL = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
     }
 
 

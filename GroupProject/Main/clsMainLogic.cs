@@ -90,26 +90,17 @@ namespace GroupProject.Main
             try
             {
                 DataSet dsLineItems = new DataSet();
-                //DataSet dsItems = new DataSet();
+                DataSet dsInvoice = new DataSet();
                 DataSet dsItemDesc = new DataSet();
                 DataSet dsItemCost = new DataSet();
 
                 int iRet = 0;
                 
-                //lineItemsResult = new List<LineItemsModel>();
-                //itemsResult = new List<ItemViewModel>();
-
                 displayList = new List<LineItemDisplayContainer>();
 
                 var query = sql.SelectAllLineItems();
-                var query2 = sql.SelectItems();
-
-                //InterfaceItemLineItems intItemLineItems;
-                //LineItemsModel lineItem;
-                //ItemViewModel item;
 
                 dsLineItems = db.ExecuteSQLStatement(query, ref iRet);
-                //dsItems = db.ExecuteSQLStatement(query2, ref iRef);
 
                 LineItemDisplayContainer displayLineItem;
 
@@ -122,6 +113,10 @@ namespace GroupProject.Main
 
                     var queryItemDesc = sql.GetItemDesc(displayLineItem.Code);
                     var queryItemCost = sql.GetItemCost(displayLineItem.Code);
+                    var queryInvoiceDate = sql.GetInvoiceDate(displayLineItem.InvoiceNum.ToString());
+
+                    dsInvoice = db.ExecuteSQLStatement(queryInvoiceDate, ref iRet);
+                    displayLineItem.InvoiceDate = dsInvoice.Tables[0].Rows[0][0].ToString();
                     
                     if (queryItemDesc != "")
                     {

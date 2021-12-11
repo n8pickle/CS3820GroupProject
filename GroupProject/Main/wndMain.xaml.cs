@@ -85,6 +85,11 @@ namespace GroupProject
         /// Current Selected Added Item
         /// </summary>
         public string addedItem;
+
+        /// <summary>
+        /// List of Added items
+        /// </summary>
+        public List<String> addedItemsList = new List<String>();
         /// <summary>
         /// List of Added items
         /// </summary>
@@ -109,10 +114,6 @@ namespace GroupProject
                 clsMainLogic = new clsMainLogic();
                 //Populate Items ComboBox
                 cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
-
-                //Populate DataGrid with Invoices
-                //List<InvoiceModel> invoice = clsMainLogic.GetAllInvoices();
-                //dgInvoice.ItemsSource = invoice;
 
                 List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = item;
@@ -306,7 +307,7 @@ namespace GroupProject
 
                 txtInvoiceNum.Text = "TBD";
                 dpInvoiceDate.SelectedDate = null;
-                txtTotalCost.Text = null;
+                txtTotalCost.Text = "";
 
                 //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
 
@@ -468,6 +469,7 @@ namespace GroupProject
                 curItem = item.ToString();
                 //Enable Add Item to Invoice Button
                 btnAddItem.IsEnabled = true;
+                // TODO txtCost.Text =
             }
             catch (Exception ex)
             {
@@ -526,6 +528,9 @@ namespace GroupProject
                     txtInvoiceNum.Text = invoice.InvoiceNum.ToString();
                     InvoiceNum = invoice.InvoiceNum.ToString();
                     dpInvoiceDate.Text = invoice.InvoiceDate;
+                    txtCost.Text = invoice.ItemPrice;
+
+                    // TODO:
                     txtTotalCost.Text = "$ " + String.Format("{0:N2}", invoice.TotalCost.ToString());
                     //total = invoice.TotalCost;
                 }
@@ -582,7 +587,7 @@ namespace GroupProject
 
                 //Insert Current Date
                 dpInvoiceDate.SelectedDate = DateTime.Today;
-                //clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
+                clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
 
                 //Generate a new Invoice ID
                 newID = clsMainLogic.GenerateInvoiceID();
@@ -593,10 +598,164 @@ namespace GroupProject
                 //Set variable to Current InvoiceNum
                 InvoiceNum = newID;
 
-                dgInvoice.Items.Clear();
+                // TODP: next line, but gets error
+                //dgInvoice.Items.Clear();
                 total = 0;
                 txtInvoiceNum.Text = "TBD";
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        private void btnAddItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Check to make sure item has been selected
+                //if (curItem.Equals(" ") || curItem.Equals(null)) return;
+                //Create variable for Item Description
+                //string itemDesc = cmbInvoiceItem.SelectedItem.ToString();
+                //Add Item to List of Invoice Added Items
+                //addeditems.Add(itemDesc);
+
+                //Check to make sure item has been selected
+                //if (curItem.Equals(" ") || curItem.Equals(null)) return;
+                //Create variable for Item Description
+                string itemDesc = cmbInvoiceItem.SelectedItem.ToString();
+                //Add Item to List of Invoice Added Items
+                addedItemsList.Add(itemDesc);
+
+                //Get Item Code from Description
+                string itemCode = clsMainLogic.getItemCode(itemDesc);
+
+                //Add cost of Item to Total
+                double cost;
+                cost = clsMainLogic.getItemCost(itemCode);
+                total += cost;
+
+                //Get Line Item Number
+                string lineItemNum = clsMainLogic.GenerateLineItemNum(InvoiceNum);
+                //Check to make sure it is not 0
+                if (lineItemNum.Equals("0") || lineItemNum.Equals(null))
+                {
+                    lineItemNum = "1";
+                }
+                //Insert Item into Line Item DB
+                clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
+                //Clear Combo Box and Reload
+                //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
+                //cmbxItemsAdded.ItemsSource = addedItemsList;
+
+                dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
+                //List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
+                dgInvoice.ItemsSource = addedItemsList;
+
+                //Clear Selected Item
+                cmbInvoiceItem.SelectedIndex = -1;
+                //Change Add Item Button IsEnabled to false
+                btnAddItem.IsEnabled = false;
+
+                //Change Total
+                txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
+
+                /* TODO: WHITNEY */
+                /*addeditems = clsMainLogic.getItems();
+                ItemViewModel item;
+
+                if (dpInvoiceDate.Text == "")
+                {
+                    MessageBox.Show("Please select a date.");
+                    return;
+                }
+                if (cmbInvoiceItem.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select an item.");
+                    return;
+                }
+
+                for (int i = 0; i < addeditems.Count; i++)
+                {
+                    if (cmbInvoiceItem.SelectedIndex == i)
+                    {
+                        item = addeditems[i];
+                        total += item.Price;
+                        txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
+                        dgInvoice.Items.Add(item);
+                    }
+                }*/
+
+
+                /*
+
+                //Get Item Code from Description
+                string itemCode = ml.getItemCode(itemDesc);
+
+                //Add cost of Item to Total
+                double cost;
+                cost = ml.getItemCost(itemCode);
+                total += cost;
+
+                //Get Line Item Number
+                string lineItemNum = ml.GenerateLineItemNum(InvoiceNum);
+                //Check to make sure it is not 0
+                if (lineItemNum.Equals("0") || lineItemNum.Equals(null))
+                {
+                    lineItemNum = "1";
+                }
+                //Insert Item into Line Item DB
+                ml.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
+                //Clear Combo Box and Reload
+                //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
+                //cmbxItemsAdded.ItemsSource = addeditems;
+                dgInvoice.Items.Add()
+                //Clear Selected Item
+                cmbInvoiceItem.SelectedIndex = -1;
+                //Change Add Item Button IsEnabled to false
+                btnAddItem.IsEnabled = false;
+
+                //Change Total
+                txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
+                */
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        private void btnSave_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // TODO: if !isEditing
+                string t = total.ToString();
+                clsMainLogic.UpdateInvoiceTotal(InvoiceNum, t);
+
+                //clear old data
+                dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
+
+                //refresh the items in the data grid
+                List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
+                dgInvoice.ItemsSource = item;
+
+                txtInvoiceNum.Text = "TBD";
+                dpInvoiceDate.SelectedDate = null;
+                txtTotalCost.Text = null;
+
+                //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
+
+                txtInvoiceNum.IsEnabled = false;
+                dpInvoiceDate.IsEnabled = false;
+                txtTotalCost.IsEnabled = false;
+                cmbInvoiceItem.IsEnabled = false;
+                //cmbxItemsAdded.IsEnabled = false;
+                //Enable Save button
+                btnSave.IsEnabled = false;
             }
             catch (Exception ex)
             {
