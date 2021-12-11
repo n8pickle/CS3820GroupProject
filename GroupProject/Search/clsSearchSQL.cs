@@ -217,7 +217,7 @@ namespace GroupProject.Search
         {
             try
             {
-                curQuery = "SELECT DISTINCT TotalCost FROM Invoices ORDER BY TotalCost DESC;";
+                curQuery = "SELECT DISTINCT TotalCost FROM Invoices ORDER BY TotalCost ASC;";
                 return curQuery;
             }
             catch (Exception ex)
