@@ -40,7 +40,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Item Description:" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0"/>
-            <TextBox x:Name="ItemDescritpionText" MaxLength="100" Text="{Binding Path=SelectedItem.Description}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="130" Height="35" Grid.Column="1"/>
+            <TextBox x:Name="ItemDescritpionText" MaxLength="40" Text="{Binding Path=SelectedItem.Description}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="130" Height="35" Grid.Column="1"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
