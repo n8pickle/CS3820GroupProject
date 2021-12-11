@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using GroupProject.Model;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using GroupProject;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+using System;
+using System.Linq;
 
 namespace GroupProject.Items
 {
@@ -34,7 +26,7 @@ namespace GroupProject.Items
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -44,15 +36,17 @@ namespace GroupProject.Items
         /// Selected item on the page
         /// </summary>
         private ItemViewModel _selectedItem;
-        public ItemViewModel SelectedItem 
+        public ItemViewModel SelectedItem
         {
             get { return _selectedItem; }
             set
             {
                 _selectedItem = value;
                 OnPropertyChanged(nameof(SelectedItem));
-            } 
+            }
         }
+
+        private clsItemsLogic _logic;
 
         /// <summary>
         /// Constructor for other windows to pass info into the window
@@ -60,6 +54,7 @@ namespace GroupProject.Items
         /// <param name="items"></param>
         public wndItems(List<ItemViewModel> items)
         {
+            _logic = new clsItemsLogic();
             Items = new ObservableCollection<ItemViewModel>(items);
             DataContext = this;
             InitializeComponent();
@@ -73,6 +68,136 @@ namespace GroupProject.Items
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedItem = ItemsGrid.SelectedItem as ItemViewModel;
+        }
+
+        /// <summary>
+        /// Onclick method to add an item to the DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(ItemDescritpionText.Text) && !string.IsNullOrEmpty(ItemPriceText.Text))
+                {
+                    string desc = ItemDescritpionText.Text;
+                    double.TryParse(ItemPriceText.Text, out double price);
+                    _logic.AddItemToDb(desc, price);
+                    Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
+                    ItemsGrid.ItemsSource = null;
+                    ItemsGrid.ItemsSource = Items;
+                }
+                else
+                {
+                    MessageBox.Show("The item description and price need to be set before creation");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Onclick Method to removed an item from the DB if it isn't in any of the Invoices
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (SelectedItem != null)
+                {
+                    var numReturned = _logic.GetInvoiceByItemCode(SelectedItem.Code);
+                    if (numReturned.Count == 0)
+                    {
+                        _logic.DeleteItemFromDb(SelectedItem.Code);
+                        Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
+                        ItemsGrid.ItemsSource = null;
+                        ItemsGrid.ItemsSource = Items;
+                    }
+                    else
+                    {
+                        string invoices = GetInvoiceString(numReturned);
+                        MessageBox.Show($"The selected item can't be deleted because it is in the following invoices: {invoices}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets as string of all the invoices comma seperated
+        /// </summary>
+        /// <param name="numReturned"></param>
+        /// <returns></returns>
+        private string GetInvoiceString(List<int> numReturned)
+        {
+            string result = $"{numReturned.First()}";
+            int[] arr = numReturned.ToArray();
+            for (int i = 1; i < arr.Length; i++)
+            {
+                result += $", {arr[i]}";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Method to update the selected item in the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (SelectedItem != null)
+                {
+                    string desc = ItemDescritpionText.Text;
+                    double.TryParse(ItemPriceText.Text, out double price);
+                    _logic.UpdateItemInDb(SelectedItem.Code, desc, price);
+                    Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
+                    ItemsGrid.ItemsSource = null;
+                    ItemsGrid.ItemsSource = Items;
+                }
+                else
+                {
+                    MessageBox.Show("No Item is selected. Please select an item to update");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Method to close the window to edit items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        private void PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

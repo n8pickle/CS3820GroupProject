@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GroupProject;
+using GroupProject.Items;
+using GroupProject.Main;
+using GroupProject.Model;
 
 namespace GroupProject
 {
@@ -27,9 +30,27 @@ namespace GroupProject
         // Button click events are passed to the logic which will execute the SQL statement.
         // The items page will populate the combo box with items.
         // Refresh items in combo box when window visibility changes.
+        public List<ItemViewModel> ItemList;
         public MainWindow()
         {
+            clsMainLogic logic = new clsMainLogic();
+            ItemList = logic.GetItemViewModels();
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dgInvoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void ctrlEditItem_Click(object sender, RoutedEventArgs e)
+        {
+            wndItems window = new wndItems(ItemList);
+            window.Show();
         }
     }
 }
