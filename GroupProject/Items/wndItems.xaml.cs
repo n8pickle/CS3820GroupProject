@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace GroupProject.Items
 {
@@ -79,7 +80,15 @@ namespace GroupProject.Items
         /// <param name="e"></param>
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedItem = ItemsGrid.SelectedItem as ItemViewModel;
+            try
+            {
+                SelectedItem = ItemsGrid.SelectedItem as ItemViewModel;
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -106,9 +115,10 @@ namespace GroupProject.Items
                     MessageBox.Show("The item description and price need to be set before creation");
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw;
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -139,9 +149,10 @@ namespace GroupProject.Items
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw;
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -152,13 +163,21 @@ namespace GroupProject.Items
         /// <returns></returns>
         private string GetInvoiceString(List<int> numReturned)
         {
-            string result = $"{numReturned.First()}";
-            int[] arr = numReturned.ToArray();
-            for (int i = 1; i < arr.Length; i++)
+            try
             {
-                result += $", {arr[i]}";
+                string result = $"{numReturned.First()}";
+                int[] arr = numReturned.ToArray();
+                for (int i = 1; i < arr.Length; i++)
+                {
+                    result += $", {arr[i]}";
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -185,9 +204,10 @@ namespace GroupProject.Items
                     MessageBox.Show("No Item is selected. Please select an item to update");
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw;
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -202,17 +222,50 @@ namespace GroupProject.Items
             {
                 Close();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                throw;
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
         }
 
+        /// <summary>
+        /// Ensures that the text in the cost input are numeric
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
+
+        /// <summary>
+        /// Handles errors and shows something user friendly
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
+        }
+
     }
 }

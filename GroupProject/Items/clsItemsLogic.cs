@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GroupProject;
@@ -37,7 +38,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
@@ -63,7 +64,11 @@ namespace GroupProject.Items
                 items.Sort((a, b) => a.Code.CompareTo(b.Code));
                 return items;
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -90,9 +95,8 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
         /// <summary>
@@ -108,11 +112,16 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
+        /// <summary>
+        /// Updates item in the database
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="desc"></param>
+        /// <param name="price"></param>
         internal void UpdateItemInDb(string code, string desc, double price)
         {
             try
@@ -128,7 +137,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
@@ -162,7 +171,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
     }
