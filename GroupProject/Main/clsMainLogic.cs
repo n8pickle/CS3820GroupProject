@@ -418,7 +418,7 @@ namespace GroupProject.Main
             }
         }
         #endregion
-        #region Delete Logic
+        #region ite Logic
         /// <summary>
         /// Method to Delete Line Items from DB
         /// </summary>
