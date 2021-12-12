@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Main
 {
-    class clsMainLogic
+    public class clsMainLogic
     {
         #region Variables
         /// <summary>

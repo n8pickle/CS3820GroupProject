@@ -39,20 +39,6 @@ namespace GroupProject.Model
         }
 
         /// <summary>
-        /// The Name of the item
-        /// </summary>
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-
-        /// <summary>
         /// The Description of the item
         /// </summary>
         private string _description;

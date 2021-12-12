@@ -252,6 +252,18 @@ namespace GroupProject
             }
 
         }
+
+        /// <summary>
+        /// Refreshes the items in the window
+        /// </summary>
+        internal void RefreshWindow()
+        {
+            dgInvoice.ItemsSource = null;
+            dgInvoice.ItemsSource = clsMainLogic.GetAllInvoices();
+            cmbInvoiceItem.ItemsSource = null;
+            cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
+        }
+
         /// <summary>
         /// This will delete an existing Invoice
         /// </summary>
