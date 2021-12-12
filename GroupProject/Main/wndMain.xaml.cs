@@ -253,6 +253,9 @@ namespace GroupProject
 
         }
 
+        /// <summary>
+        /// Refreshes the items in the window
+        /// </summary>
         internal void RefreshWindow()
         {
             dgInvoice.ItemsSource = null;
