@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Model
 {
+    /// <summary>
+    /// class for storing stuff in the LineItems table in LineItemsModel
+    /// </summary>
     public class LineItemsModel
     {
         /// <summary>
-        /// Invoice Number
+        /// gets and sets the InvoiceNum
         /// </summary>
         public int InvoiceNum { get; set; }
 
         /// <summary>
-        /// Line Item Number
+        /// gets and sets the LineItemNum
         /// </summary>
         public int LineItemNum { get; set; }
 
         /// <summary>
-        /// The Item code for the transaction
+        /// gets and sets the ItemCode
         /// </summary>
         public string Code { get; set; }
     }

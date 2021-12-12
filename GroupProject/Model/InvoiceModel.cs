@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Model
 {
+    /// <summary>
+    /// class for storing stuff in the Invoice table in InvoiceModel
+    /// </summary>
     public class InvoiceModel
     {
         /// <summary>
-        /// The invoice number.
+        /// gets and sets the InvoiceNum
         /// </summary>
         public int InvoiceNum { get; set; }
 
         /// <summary>
-        /// The invoice date.
+        /// gets and sets the InvoiceDate
         /// </summary>
         public string InvoiceDate { get; set; }
 
         /// <summary>
-        /// The total cost of the invoice.
+        /// gets and sets the TotalCost
         /// </summary>
         public int TotalCost { get; set; }
     }

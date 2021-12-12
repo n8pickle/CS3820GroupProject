@@ -113,6 +113,24 @@ namespace GroupProject.Main
         }
 
         /// <summary>
+        /// This will insert a new Invoice into the Database
+        /// </summary>
+        /// <returns></returns>
+        public string InsertInvoiceNum(string InvoiceNum)
+        {
+            try
+            {
+                string sSQL = "INSERT INTO Invoices (InvoiceNum) VALUES (#" + InvoiceNum + ")";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
+
+        /// <summary>
         /// This will Select and return Invoice Data from the DB
         /// </summary>
         /// <returns></returns>
@@ -120,8 +138,7 @@ namespace GroupProject.Main
         {
             try
             {
-                string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost " +
-    "FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
+                string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
                 return sSQL;
             }
             catch (Exception ex)
@@ -175,16 +192,13 @@ namespace GroupProject.Main
         {
             try
             {
-                string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode " +
-    "FROM LineItems " +
-    "WHERE InvoiceNum = {0}", InvoiceNum);
+                string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode FROM LineItems WHERE InvoiceNum = {0}", InvoiceNum);
                 return sSQL;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
         // TODO: delte this
@@ -200,7 +214,7 @@ namespace GroupProject.Main
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        
+
         /// <summary>
         /// Select All Invoices
         /// </summary>
@@ -300,6 +314,42 @@ namespace GroupProject.Main
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// This will Return all the item details from item desc
+        /// </summary>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public string GetItemInfo(string itemDesc)
+        {
+            try
+            {
+                string sSQL = "SELECT * FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This will Select and return Invoice Data from the DB
+        /// </summary>
+        /// <returns></returns>
+        public string GetInvoiceDate(string InvoiceNum)
+        {
+            try
+            {
+                string sSQL = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + InvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
     }
 
