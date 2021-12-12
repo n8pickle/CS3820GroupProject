@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Model
 {
-    class InvoiceModel
+    public class InvoiceModel
     {
         /// <summary>
         /// The invoice number.

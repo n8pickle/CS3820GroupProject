@@ -278,6 +278,7 @@ namespace GroupProject.Main
             try
             {
                 return String.Format("SELECT Cost FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+<<<<<<< HEAD
 
             }
             catch (Exception ex)
@@ -337,6 +338,31 @@ namespace GroupProject.Main
             }
 
         }
+=======
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// This will Return the Item Description
+        /// </summary>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public string GetItemDesc(string itemCode)
+        {
+            try
+            {
+                return String.Format("SELECT ItemDesc FROM ItemDesc WHERE ItemCode = '" + itemCode + "'");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+>>>>>>> d6fa2c2908dd8d185133fe1ca86b6961656cd2c8
     }
 
 

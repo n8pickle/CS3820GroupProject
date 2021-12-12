@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Main
 {
-    class clsMainLogic
+    public class clsMainLogic
     {
         #region Variables
         /// <summary>
@@ -291,9 +291,14 @@ namespace GroupProject.Main
 
                 items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
 
+<<<<<<< HEAD
                 itemsSearch.Add(items);
 
                 return itemsSearch;
+=======
+                itemsSearchByCode.Add(items);
+
+>>>>>>> d6fa2c2908dd8d185133fe1ca86b6961656cd2c8
             }
             catch (Exception ex)
             {
