@@ -41,7 +41,7 @@ namespace GroupProject.Main
         /// <summary>
         /// List of Item Objects for Searching By Item Code
         /// </summary>
-        List<ItemViewModel> itemsSearchByCode;
+        List<LineItemDisplayContainer> itemsSearchByCode;
         /// <summary>
         /// List of Line Items Objects
         /// </summary>
@@ -236,20 +236,20 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="itemCode"></param>
         /// <returns></returns>
-        public List<ItemViewModel> GetItemsByCode(string itemCode)
+        public List<LineItemDisplayContainer> GetItemsByCode(string itemCode)
         {
             try
             {
                 DataSet ds = new DataSet();
                 int iRef = 0;
                 var query = sql.GetItemDesc(itemCode);
-                itemsSearchByCode = new List<ItemViewModel>();
+                itemsSearchByCode = new List<LineItemDisplayContainer>();
 
                 ds = db.ExecuteSQLStatement(query, ref iRef);
 
-                ItemViewModel items = new ItemViewModel();
+                LineItemDisplayContainer items = new LineItemDisplayContainer();
 
-                items.Description = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
 
                 itemsSearchByCode.Add(items);
 

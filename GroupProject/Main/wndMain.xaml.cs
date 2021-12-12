@@ -48,11 +48,6 @@ namespace GroupProject
         clsMainLogic clsMainLogic;
 
         /// <summary>
-        /// Main SQL object
-        /// </summary>
-        clsMainSQL sql;
-
-        /// <summary>
         /// flag for editing invoice
         /// </summary>
         bool isEditing;
@@ -142,6 +137,7 @@ namespace GroupProject
             {
                 if (ctrlItems.IsChecked == true)
                 {
+                    // TODO: This form can be accessed through the menu and only when an invoice is not being edited or a new invoice is being entered.
                     itemsWindow = new wndItems();
 
                     this.Hide();
@@ -201,7 +197,7 @@ namespace GroupProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        /*private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -209,28 +205,16 @@ namespace GroupProject
                 btnNew.IsEnabled = false;
                 btnDelete.IsEnabled = false;
                 btnAddItem.IsEnabled = true;
+                btnRemoveItem.IsEnabled = true;
                 btnSave.IsEnabled = true;
-                //btnDeleteLine.Visibility = Visibility.Visible;
-
-
-                /*
-                //Enable Buttons
                 txtInvoiceNum.IsEnabled = true;
                 dpInvoiceDate.IsEnabled = true;
-                txtTotalCost.IsEnabled = true;
                 cmbInvoiceItem.IsEnabled = true;
-                //cmbxItemsAdded.IsEnabled = true;
-
-                //Enable Save button
-                btnSave.IsEnabled = true;
-
-                //disable edit and delete buttons
-                btnEdit.IsEnabled = false;
                 btnDelete.IsEnabled = false;
 
                 //get items from line item 
-                List<LineItemsModel> i = ml.getInvoiceItems(InvoiceNum);
-                List<String> code = i.Select(a => a.ItemCode).ToList();
+                List<LineItemsModel> i = clsMainLogic.getInvoiceItems(InvoiceNum);
+                List<String> code = i.Select(a => a.Code).ToList();
 
                 List<ItemViewModel> temp = new List<ItemViewModel>();
 
@@ -244,7 +228,7 @@ namespace GroupProject
                 addeditems.AddRange(desc);
 
                 //cmbxItemsAdded.ItemsSource = addeditems;
-                */
+                
             }
             catch (Exception ex)
             {
@@ -252,7 +236,7 @@ namespace GroupProject
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
-        }
+        }*/
         /// <summary>
         /// This will delete an existing Invoice
         /// </summary>
@@ -756,6 +740,73 @@ namespace GroupProject
                 //cmbxItemsAdded.IsEnabled = false;
                 //Enable Save button
                 btnSave.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        private void btnEdit_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                isEditing = true;
+                btnNew.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                btnAddItem.IsEnabled = true;
+                btnRemoveItem.IsEnabled = true;
+                btnSave.IsEnabled = true;
+                txtInvoiceNum.IsEnabled = true;
+                dpInvoiceDate.IsEnabled = true;
+                cmbInvoiceItem.IsEnabled = true;
+                btnDelete.IsEnabled = false;
+
+                //get items from line item 
+                List<LineItemsModel> i = clsMainLogic.getInvoiceItems(InvoiceNum);
+                List<String> code = i.Select(a => a.Code).ToList();
+
+                List<LineItemDisplayContainer> temp = new List<LineItemDisplayContainer>();
+
+                foreach (var item in code)
+                {
+                    temp = clsMainLogic.GetItemsByCode(item);
+
+                }
+                List<String> desc = new List<String>();
+                desc = temp.Select(a => a.ItemDesc).ToList();
+                addedItemsList.AddRange(desc);
+
+                //cmbxItemsAdded.ItemsSource = addeditems;
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+
+        }
+
+        private void btnDelete_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)dgInvoice.SelectedItem;
+                string invoiceNum = selectedItem.InvoiceNum.ToString();
+
+                clsMainLogic.DeleteLineItems(invoiceNum);
+                clsMainLogic.DeleteInvoice(invoiceNum);
+
+                dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
+
+                //Populate DataGrid with Invoices
+                List<LineItemDisplayContainer> refresh = clsMainLogic.getAllLineItems();
+                dgInvoice.ItemsSource = refresh;
+                //disable Delete and Edit Buttons
+                btnDelete.IsEnabled = false;
+                btnEdit.IsEnabled = false;
             }
             catch (Exception ex)
             {
