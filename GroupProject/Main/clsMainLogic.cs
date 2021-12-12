@@ -41,7 +41,7 @@ namespace GroupProject.Main
         /// <summary>
         /// List of Item Objects for Searching By Item Code
         /// </summary>
-        List<LineItemDisplayContainer> itemsSearchByCode;
+        List<LineItemDisplayContainer> itemsSearch;
         /// <summary>
         /// List of Line Items Objects
         /// </summary>
@@ -165,6 +165,46 @@ namespace GroupProject.Main
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Runs the provided SQL string and fills string up with result
+        /// </summary>
+        /// <param name="itemDesc"></param>
+        /// <returns></returns>
+        public LineItemDisplayContainer getItemInfo(string itemDesc)
+        {
+            try
+            {
+
+                DataSet ds = new DataSet();
+                int iRef = 0;
+                var query = sql.GetItems(itemDesc);
+
+                //itemsSearch = new List<LineItemDisplayContainer>();
+
+                LineItemDisplayContainer items = new LineItemDisplayContainer();
+
+                ds = db.ExecuteSQLStatement(query, ref iRef);
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    
+                    items.Code = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                    items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                    items.ItemPrice = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+
+                    //itemsSearch.Add(items);
+                }
+
+                return items;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
         /// <summary>
         /// Runs SQL to Get Invoice Items through the LineItems DB
         /// </summary>
@@ -243,7 +283,7 @@ namespace GroupProject.Main
                 DataSet ds = new DataSet();
                 int iRef = 0;
                 var query = sql.GetItemDesc(itemCode);
-                itemsSearchByCode = new List<LineItemDisplayContainer>();
+                itemsSearch = new List<LineItemDisplayContainer>();
 
                 ds = db.ExecuteSQLStatement(query, ref iRef);
 
@@ -251,15 +291,16 @@ namespace GroupProject.Main
 
                 items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
 
-                itemsSearchByCode.Add(items);
+                itemsSearch.Add(items);
 
+                return itemsSearch;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            return itemsSearchByCode;
+            
         }
 
         public List<InvoiceModel> GetAllInvoices()

@@ -38,7 +38,7 @@
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="502,375,0,0" VerticalAlignment="Top" Width="75" Click="btnSave_Click_1"/>
         <Label x:Name="lblTotalCost" Content="Total Cost:" HorizontalAlignment="Left" Margin="495,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.407,1.82"/>
         <TextBox x:Name="txtTotalCost" IsReadOnly="True"  HorizontalAlignment="Left" Height="23" Margin="577,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnRemoveItem" Content="Remove" HorizontalAlignment="Left" Margin="193,370,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.749,0.451"/>
+        <Button x:Name="btnRemoveItem" Content="Remove" HorizontalAlignment="Left" Margin="193,370,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.749,0.451" Click="btnRemoveItem_Click"/>
 
     </Grid>
 </Window>

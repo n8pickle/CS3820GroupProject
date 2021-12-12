@@ -303,6 +303,23 @@ namespace GroupProject.Main
         }
 
         /// <summary>
+        /// This will Return all the item details from item desc
+        /// </summary>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public string GetItems(string itemDesc)
+        {
+            try
+            {
+                return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// This will Select and return Invoice Data from the DB
         /// </summary>
         /// <returns></returns>
