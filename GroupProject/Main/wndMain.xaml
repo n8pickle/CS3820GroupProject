@@ -27,7 +27,7 @@
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="236,31,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click_1"/>
         <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="338,31,0,0" VerticalAlignment="Top" Width="75" Click="btnDelete_Click_1"/>
         <Label x:Name="lblInvoiceNum" Content="Invoice Number:" HorizontalAlignment="Left" Margin="31,167,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtInvoiceNum" HorizontalAlignment="Left" Height="23" Margin="134,167,0,0" TextWrapping="Wrap" Text="TBD" VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="txtInvoiceNum" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="134,167,0,0" TextWrapping="Wrap" Text="TBD" VerticalAlignment="Top" Width="102"/>
         <DatePicker x:Name="dpInvoiceDate" HorizontalAlignment="Left" Margin="134,211,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblDate" Content="Date:" HorizontalAlignment="Left" Margin="92,209,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="cmbInvoiceItem" HorizontalAlignment="Left" Margin="134,263,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbInvoiceItem_SelectionChanged"/>
