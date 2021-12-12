@@ -178,7 +178,7 @@ namespace GroupProject.Main
 
                 DataSet ds = new DataSet();
                 int iRef = 0;
-                var query = sql.GetItems(itemDesc);
+                var query = sql.GetItemInfo(itemDesc);
 
                 //itemsSearch = new List<LineItemDisplayContainer>();
 
@@ -188,10 +188,10 @@ namespace GroupProject.Main
 
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    
-                    items.Code = ds.Tables[0].Rows[0].ItemArray[0].ToString();
-                    items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
-                    items.ItemPrice = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+
+                    items.Code = ds.Tables[0].Rows[i][0].ToString();
+                    items.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
+                    items.ItemPrice = ds.Tables[0].Rows[i][2].ToString();
 
                     //itemsSearch.Add(items);
                 }

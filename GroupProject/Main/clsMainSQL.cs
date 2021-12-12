@@ -307,11 +307,12 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="itemCode"></param>
         /// <returns></returns>
-        public string GetItems(string itemDesc)
+        public string GetItemInfo(string itemDesc)
         {
             try
             {
-                return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+                string sSQL = "SELECT * FROM ItemDesc WHERE ItemDesc = '" + itemDesc + "'";
+                return sSQL;
             }
             catch (Exception ex)
             {
