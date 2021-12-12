@@ -21,7 +21,7 @@ namespace GroupProject.Main
         /// </summary>
         clsMainSQL sql = new clsMainSQL();
         /// <summary>
-        /// List of Invoice Objects 
+        /// List of Invoice Objects
         /// </summary>
         List<InvoiceModel> invoiceResult;
 
@@ -95,7 +95,7 @@ namespace GroupProject.Main
                 DataSet dsItemCost = new DataSet();
 
                 int iRet = 0;
-                
+
                 displayList = new List<LineItemDisplayContainer>();
 
                 var query = sql.SelectAllLineItems();
@@ -117,7 +117,7 @@ namespace GroupProject.Main
 
                     dsInvoice = db.ExecuteSQLStatement(queryInvoiceDate, ref iRet);
                     displayLineItem.InvoiceDate = dsInvoice.Tables[0].Rows[0][0].ToString();
-                    
+
                     if (queryItemDesc != "")
                     {
                         dsItemDesc = db.ExecuteSQLStatement(queryItemDesc, ref iRet);
@@ -129,7 +129,7 @@ namespace GroupProject.Main
                         dsItemCost = db.ExecuteSQLStatement(queryItemCost, ref iRet);
                         displayLineItem.ItemPrice = dsItemCost.Tables[0].Rows[0][0].ToString();
                     }
-                    
+
                     displayList.Add(displayLineItem);
                 }
                 return displayList;
@@ -291,21 +291,16 @@ namespace GroupProject.Main
 
                 items.ItemDesc = ds.Tables[0].Rows[0].ItemArray[0].ToString();
 
-<<<<<<< HEAD
                 itemsSearch.Add(items);
 
                 return itemsSearch;
-=======
-                itemsSearchByCode.Add(items);
-
->>>>>>> d6fa2c2908dd8d185133fe1ca86b6961656cd2c8
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            
+
         }
 
         public List<InvoiceModel> GetAllInvoices()
