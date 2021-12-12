@@ -91,6 +91,11 @@ namespace GroupProject
         public string addedItem;
 
         /// <summary>
+        /// keeps track of current invoice record.
+        /// </summary>
+        LineItemDisplayContainer invoice;
+
+        /// <summary>
         /// List of Added items
         /// </summary>
         public List<LineItemDisplayContainer> addedItemsList = new List<LineItemDisplayContainer>();
@@ -120,6 +125,7 @@ namespace GroupProject
 
                 List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = item;
+                invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
 
                 btnEdit.IsEnabled = false;
                 btnDelete.IsEnabled = false;
@@ -257,10 +263,10 @@ namespace GroupProject
         {
             try
             {
-                LineItemDisplayContainer invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
-
+                invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
                 if (invoice != null)
                 {
+
                     btnEdit.IsEnabled = true;
                     btnDelete.IsEnabled = true;
                     btnNew.IsEnabled = true;
@@ -320,6 +326,7 @@ namespace GroupProject
                 btnSave.IsEnabled = false;
                 btnEdit.IsEnabled = false;
                 btnDelete.IsEnabled = false;
+                btnRemoveItem.IsEnabled = true;
 
                 dpInvoiceDate.SelectedDate = DateTime.Today;
                 clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
@@ -353,10 +360,22 @@ namespace GroupProject
             try
             {
                 string total = this.total.ToString();
-                clsMainLogic.UpdateInvoiceTotal(InvoiceNum, total);
-                clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
+                if (InvoiceNum != null)
+                {
+                    clsMainLogic.UpdateInvoiceTotal(InvoiceNum, total);
+                    clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
+                }
 
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
+
+                /*
+                foreach (LineItemDisplayContainer itemAdded in addedItemsList)
+                {
+                    clsMainLogic.UpdateInvoiceTotal(itemAdded.InvoiceNum.ToString(), total);
+                    clsMainLogic.InsertLineItem(itemAdded.InvoiceNum.ToString(), lineItemNum, itemCode);
+                    clsMainLogic.InsertInvoiceNum(itemAdded.InvoiceNum.ToString());
+                }
+                */
 
                 List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = item;
@@ -469,9 +488,7 @@ namespace GroupProject
 
                 //string itemDesc = cmbInvoiceItem.SelectedItem.ToString(
 
-                LineItemDisplayContainer invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
-
-
+                invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
 
                 /*
                 LineItemDisplayContainer itemInfo = clsMainLogic.getItemInfo(itemDesc);
@@ -485,7 +502,7 @@ namespace GroupProject
                 if (invoice != null)
                 {
                     string itemDesc = invoice.ItemDesc;
-                    string itemCode = invoice.Code.ToString();
+                    string itemCode = invoice.Code;
 
                     double cost;
                     cost = Convert.ToDouble(invoice.ItemPrice);
@@ -545,6 +562,7 @@ namespace GroupProject
                 cmbInvoiceItem.SelectedIndex = -1;
                 btnSave.IsEnabled = true;
                 txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
+
             }
             catch (Exception ex)
             {

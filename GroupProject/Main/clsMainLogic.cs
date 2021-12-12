@@ -359,6 +359,26 @@ namespace GroupProject.Main
             }
         }
 
+
+        /// <summary>
+        /// inserts  invoice num into Invoice table
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        public void InsertInvoiceNum(string invoiceNum)
+        {
+            try
+            {
+                var query = sql.InsertInvoiceNum(invoiceNum);
+
+                db.ExecuteNonQuery(query);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
         /// summary>
         /// updates invoice total in Invoice table
         /// </summary>
