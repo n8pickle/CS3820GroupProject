@@ -9,7 +9,7 @@
     <Grid>
         <Menu HorizontalAlignment="Left" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Width="80">
             <MenuItem Header="Menu">
-                <MenuItem x:Name="ctrlItems" Header="Items" IsCheckable="false" Click="EditItemsMenu_Click"/>
+                <MenuItem x:Name="ctrlItems" Header="Edit Items" IsCheckable="false" Click="EditItemsMenu_Click"/>
                 <MenuItem x:Name="ctrlSearch" Header="Search" IsCheckable="false" Click="SearchItems_Click"/>
             </MenuItem>
         </Menu>

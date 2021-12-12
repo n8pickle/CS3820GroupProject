@@ -120,8 +120,7 @@ namespace GroupProject.Main
         {
             try
             {
-                string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost " +
-    "FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
+                string sSQL = "SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices WHERE InvoiceNum =" + InvoiceNum;
                 return sSQL;
             }
             catch (Exception ex)
@@ -175,16 +174,13 @@ namespace GroupProject.Main
         {
             try
             {
-                string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode " +
-    "FROM LineItems " +
-    "WHERE InvoiceNum = {0}", InvoiceNum);
+                string sSQL = String.Format("SELECT InvoiceNum, LineItemNum, ItemCode FROM LineItems WHERE InvoiceNum = {0}", InvoiceNum);
                 return sSQL;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
         // TODO: delte this

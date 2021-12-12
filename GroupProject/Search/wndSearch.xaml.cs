@@ -131,6 +131,8 @@ namespace GroupProject.Search
                 SelectedID = log.finalSelection(Invoicedg.SelectedIndex);
 
                 errorLbl.Content = SelectedID.ToString();
+
+                this.Close();
             }
             catch (Exception ex)
             {

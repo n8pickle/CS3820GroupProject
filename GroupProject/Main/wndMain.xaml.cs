@@ -2,18 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using GroupProject;
 using GroupProject.Items;
 using GroupProject.Main;
 using GroupProject.Model;
@@ -26,13 +16,6 @@ namespace GroupProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        // The main window should allow the user to create new invoices, edit existing invoices, or delete existing invoices.
-        // There is a Menu control box in the top left corner to navigate to the search and items pages.
-        // There are buttons that will connect the logic and SQL classes for the main window.
-        // Button click events are passed to the logic which will execute the SQL statement.
-        // The items page will populate the combo box with items.
-        // Refresh items in combo box when window visibility changes.
-        #region Variables
         /// <summary>
         /// Item window object to create the window
         /// </summary>
@@ -48,12 +31,18 @@ namespace GroupProject
         clsMainLogic clsMainLogic;
 
         /// <summary>
-        /// flag for editing invoice
+        /// bool for editing invoice
         /// </summary>
         bool isEditing;
 
+        /// <summary>
+        /// bool for creating a new invoice
+        /// </summary>
         bool isCreatingNewInvoice;
 
+        /// <summary>
+        /// bool for if an item is currently being added
+        /// </summary>
         bool isAddingItem;
 
         /// <summary>
@@ -61,7 +50,14 @@ namespace GroupProject
         /// </summary>
         public string InvoiceNum;
 
+        /// <summary>
+        /// string to keep track of the current itemCode (Code)
+        /// </summary>
         string itemCode;
+
+        /// <summary>
+        /// string to keep track of the current lineItemNum
+        /// </summary>
         string lineItemNum;
 
         /// <summary>
@@ -74,14 +70,21 @@ namespace GroupProject
         /// </summary>
         public string InvoiceDate;
 
+        /// <summary>
+        /// ItemDesc column in datagrid
+        /// </summary>
         public string ItemDesc;
 
+        /// <summary>
+        /// ItemPrice column in datagrid
+        /// </summary>
         public string ItemPrice;
 
         /// <summary>
         /// Current Selected Item
         /// </summary>
         public string curItem;
+
         /// <summary>
         /// Current Selected Added Item
         /// </summary>
@@ -91,17 +94,17 @@ namespace GroupProject
         /// List of Added items
         /// </summary>
         public List<LineItemDisplayContainer> addedItemsList = new List<LineItemDisplayContainer>();
+
         /// <summary>
         /// List of Added items
         /// </summary>
         public List<ItemViewModel> addeditems = new List<ItemViewModel>();
+
         /// <summary>
         /// Running Total of Added Items
         /// </summary>
         double total = 0;
-        #endregion
 
-        #region Constructor
         /// <summary>
         /// Constructor for Main Window
         /// </summary>
@@ -113,7 +116,6 @@ namespace GroupProject
                 Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
                 clsMainLogic = new clsMainLogic();
-                //Populate Items ComboBox
                 cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
 
                 List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
@@ -137,12 +139,10 @@ namespace GroupProject
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
-        #endregion
 
-        #region Control Menu
 
         /// <summary>
-        /// handles control menu clicks
+        /// handles when the edit items menu item is clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -152,14 +152,11 @@ namespace GroupProject
             {
                 if (!isEditing && !isCreatingNewInvoice)
                 {
-                    // TODO: This form can be accessed through the menu and only when an invoice is not being edited or a new invoice is being entered.
                     itemsWindow = new wndItems();
 
                     this.Hide();
 
                     itemsWindow.ShowDialog();
-
-                    //Update all dropdowns to reflect any changes (dropdown.itemsSource =)
 
                     this.Show();
 
@@ -174,12 +171,13 @@ namespace GroupProject
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
         /// <summary>
-        /// handles control menu clicks
+        /// handles when the search menu item is clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -187,7 +185,6 @@ namespace GroupProject
         {
             try
             {
-
                 searchWindow = new wndSearch();
 
                 this.Hide();
@@ -197,7 +194,6 @@ namespace GroupProject
                 string selectedID = searchWindow.SelectedID;
 
 
-                //find the invoice in the datagrid
                 int i = 0;
                 if (selectedID != "")
                 {
@@ -218,20 +214,13 @@ namespace GroupProject
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
-        #endregion
-
-        #region Buttons
-
-
-        #endregion
-
-        #region Combo Box
         /// <summary>
-        /// Invoice Item on Selection loads curItem
+        /// Tracks selection in the InvoiceItem combobox
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -250,7 +239,6 @@ namespace GroupProject
                     double curItemCost = clsMainLogic.getItemCost(curItemDesc);
                     txtCost.Text = curItemCost.ToString();
                 }
-
             }
             catch (Exception ex)
             {
@@ -260,11 +248,8 @@ namespace GroupProject
         }
 
 
-        #endregion
-
-        #region Data Grid
         /// <summary>
-        /// Data Grid on Selected Invoice
+        /// Tracks selected item in dgInvoice datagrid
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -285,12 +270,8 @@ namespace GroupProject
                     dpInvoiceDate.Text = invoice.InvoiceDate;
                     txtCost.Text = invoice.ItemPrice;
 
-                    // TODO:
                     txtTotalCost.Text = "$ " + String.Format("{0:N2}", invoice.TotalCost.ToString());
-                    //total = invoice.TotalCost;
                 }
-
-
             }
             catch (System.Exception ex)
             {
@@ -298,32 +279,6 @@ namespace GroupProject
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
-        #endregion
-
-        #region Error Handling
-        /// <summary>
-        /// exception handler that shows the error
-        /// </summary>
-        /// <param name="sClass"></param>
-        /// <param name="sMethod"></param>
-        /// <param name="sMessage"></param>
-        private void HandleError(string sClass, string sMethod, string sMessage)
-        {
-            try
-            {
-                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
-            }
-            catch (System.Exception ex)
-            {
-                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
-            }
-        }
-
-
-
-
-
-        #endregion
 
 
         /// <summary>
@@ -331,12 +286,25 @@ namespace GroupProject
         /// </summary>
         internal void RefreshWindow()
         {
-            dgInvoice.ItemsSource = null;
-            dgInvoice.ItemsSource = clsMainLogic.GetAllInvoices();
-            cmbInvoiceItem.ItemsSource = null;
-            cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
+            try
+            {
+                dgInvoice.ItemsSource = null;
+                dgInvoice.ItemsSource = clsMainLogic.GetAllInvoices();
+                cmbInvoiceItem.ItemsSource = null;
+                cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles when the New button is clicked. Creates a new invoice.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnNew_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -364,8 +332,6 @@ namespace GroupProject
 
                 InvoiceNum = newID;
 
-                // TODP: next line, but gets error
-                //dgInvoice.Items.Clear();
                 total = 0;
                 txtInvoiceNum.Text = "TBD";
 
@@ -377,8 +343,11 @@ namespace GroupProject
             }
         }
 
-
-
+        /// <summary>
+        /// handles when the Save button is clicked. Saves the invoice record.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSave_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -387,10 +356,8 @@ namespace GroupProject
                 clsMainLogic.UpdateInvoiceTotal(InvoiceNum, total);
                 clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
 
-                //clear old data
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
 
-                //refresh the items in the data grid
                 List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = item;
 
@@ -398,7 +365,6 @@ namespace GroupProject
                 dpInvoiceDate.SelectedDate = null;
                 txtTotalCost.Text = null;
 
-                //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
                 addedItemsList = new List<LineItemDisplayContainer>();
 
                 txtInvoiceNum.IsEnabled = false;
@@ -419,6 +385,11 @@ namespace GroupProject
             }
         }
 
+        /// <summary>
+        /// handles when the Edit button is clicked. Edits an invoice record.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEdit_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -434,7 +405,6 @@ namespace GroupProject
                 cmbInvoiceItem.IsEnabled = true;
                 btnDelete.IsEnabled = false;
 
-                //get items from line item
                 List<LineItemsModel> i = clsMainLogic.getInvoiceItems(InvoiceNum);
                 List<String> code = i.Select(a => a.Code).ToList();
 
@@ -445,13 +415,8 @@ namespace GroupProject
                     temp = clsMainLogic.GetItemsByCode(item);
 
                 }
-                //List<String> desc = new List<String>();
-                //desc = temp.Select(a => a.ItemDesc).ToList();
-                //addedItemsList.AddRange(desc);
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
                 dgInvoice.ItemsSource = temp;
-                //cmbxItemsAdded.ItemsSource = addeditems;
-
             }
             catch (Exception ex)
             {
@@ -461,6 +426,11 @@ namespace GroupProject
 
         }
 
+        /// <summary>
+        /// handles when the Delete button is clicked. Deletes an invoice record.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDelete_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -473,10 +443,9 @@ namespace GroupProject
 
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
 
-                //Populate DataGrid with Invoices
                 List<LineItemDisplayContainer> refresh = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = refresh;
-                //disable Delete and Edit Buttons
+
                 btnDelete.IsEnabled = false;
                 btnEdit.IsEnabled = false;
             }
@@ -487,12 +456,17 @@ namespace GroupProject
             }
         }
 
+        /// <summary>
+        /// handles when the Remove button is clicked. Removes an item from editing/creating mode.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRemoveItem_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Check to make sure item is selected
-                // if (addedItem.Equals(" ") || addedItem.Equals(null)) return;
+                // TODO: FIX THIS METHOD
+
                 //string itemDesc = cmbInvoiceItem.SelectedItem.ToString(
 
                 LineItemDisplayContainer invoice = (LineItemDisplayContainer)dgInvoice.SelectedItem;
@@ -511,16 +485,11 @@ namespace GroupProject
                 if (invoice != null)
                 {
                     string itemDesc = invoice.ItemDesc;
-                    //Remove item
-                    //addedItemsList.Remove(itemDesc);
-
-                    //string itemCode = clsMainLogic.getItemCode(itemDesc);
                     string itemCode = invoice.Code.ToString();
-                    //Subtract removed item from total
+
                     double cost;
                     cost = Convert.ToDouble(invoice.ItemPrice);
                     total -= cost;
-                    //Remove Item from Invoice
 
                     addedItemsList.Remove(invoice);
 
@@ -528,20 +497,10 @@ namespace GroupProject
                     {
                         clsMainLogic.DeleteItemFromInvoice(InvoiceNum, itemCode);
                     }
-                    //Clear ComboBox Added Items
-                    //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
 
                     dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
-                    //List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                     dgInvoice.ItemsSource = addedItemsList;
-                    //Reload Added Items to ComboBox
-                    //cmbxItemsAdded.ItemsSource = addeditems;
-                    //Clear Selected
-                    //cmbxItemsAdded.SelectedIndex = -1;
-                    //Disable Remove Button
-                    //btnRemoveItem.IsEnabled = false;
-
-                    //Change Total
+                    
                     txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
                 }
             }
@@ -552,65 +511,63 @@ namespace GroupProject
             }
         }
 
+        /// <summary>
+        /// handles when the Add button is clicked. Adds an item to the invoice record, but doens't save it to the add.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddItem_Click_1(object sender, RoutedEventArgs e)
         {
             try
             {
                 isAddingItem = true;
-                //if (curItem.Equals(" ") || curItem.Equals(null)) return;
                 string itemDesc = cmbInvoiceItem.SelectedItem.ToString();
-                //Add Item to List of Invoice Added Items
 
                 LineItemDisplayContainer itemInfo = clsMainLogic.getItemInfo(itemDesc);
 
-                // TODO:
-                // get info from itemDesc
-                // added items will be a LineItemContainer list type
-                // add itemInfo to addedItemsList
-
-                //addedItemsList = clsMainLogic.getItemInfo(itemDesc
                 addedItemsList.Add(itemInfo);
 
-                // addedItemsList.Add(itemDesc);
-
-                //Get Item Code from Description
                 itemCode = clsMainLogic.getItemCode(itemDesc);
 
-                //Add cost of Item to Total
                 double cost;
                 cost = clsMainLogic.getItemCost(itemCode);
                 total += cost;
 
-                //Get Line Item Number
                 lineItemNum = clsMainLogic.GenerateLineItemNum(InvoiceNum);
-                //Check to make sure it is not 0
                 if (lineItemNum.Equals("0") || lineItemNum.Equals(null))
                 {
                     lineItemNum = "1";
                 }
-                //Insert Item into Line Item DB
-                // TODO: in save instead -- clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
-                //Clear Combo Box and Reload
-                //cmbxItemsAdded.ClearValue(ItemsControl.ItemsSourceProperty);
-                //cmbxItemsAdded.ItemsSource = addedItemsList;
 
                 dgInvoice.ClearValue(ItemsControl.ItemsSourceProperty);
-                //List<LineItemDisplayContainer> item = clsMainLogic.getAllLineItems();
                 dgInvoice.ItemsSource = addedItemsList;
 
-                //Clear Selected Item
                 cmbInvoiceItem.SelectedIndex = -1;
                 btnSave.IsEnabled = true;
-                //Change Total
                 txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
-
-
-
             }
             catch (Exception ex)
             {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// exception handler that shows the error
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
     }
