@@ -54,7 +54,7 @@ namespace GroupProject
 
         bool isCreatingNewInvoice;
 
-        bool isAddItem;
+        bool isAddingItem;
 
         /// <summary>
         /// InvoiceNum from main window.
@@ -125,7 +125,10 @@ namespace GroupProject
                 btnRemoveItem.IsEnabled = false;
                 btnSave.IsEnabled = false;
                 cmbInvoiceItem.IsEnabled = false;
-                isAddItem = false;
+                isAddingItem = false;
+                dpInvoiceDate.IsEnabled = false;
+                isEditing = false;
+                isCreatingNewInvoice = false;
 
             }
             catch (Exception ex)
@@ -143,11 +146,11 @@ namespace GroupProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void EditItemsMenu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ctrlItems.IsChecked == true)
+                if (!isEditing && !isCreatingNewInvoice)
                 {
                     // TODO: This form can be accessed through the menu and only when an invoice is not being edited or a new invoice is being entered.
                     itemsWindow = new wndItems();
@@ -163,36 +166,55 @@ namespace GroupProject
                     cmbInvoiceItem.ClearValue(ItemsControl.ItemsSourceProperty);
                     cmbInvoiceItem.ItemsSource = clsMainLogic.getItems().Select(a => a.Description);
                 }
-                if (ctrlSearch.IsChecked == true)
+                else
                 {
-                    searchWindow = new wndSearch();
-
-                    this.Hide();
-
-                    searchWindow.ShowDialog();
-                    int num;
-                    string selectedID = searchWindow.SelectedID;
-
-
-                    //find the invoice in the datagrid
-                    int i = 0;
-                    if (selectedID != "")
-                    {
-                        num = Convert.ToInt32(selectedID);
-                        foreach (var item in dgInvoice.Items)
-                        {
-                            LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)item;
-                            if (selectedItem.InvoiceNum == num)
-                            {
-                                break;
-                            }
-                            i++;
-                        }
-
-                        dgInvoice.SelectedIndex = i;
-                    }
-                    this.Show();
+                    MessageBox.Show("Must not be editing or making new invoice.");
                 }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// handles control menu clicks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchItems_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                searchWindow = new wndSearch();
+
+                this.Hide();
+
+                searchWindow.ShowDialog();
+                int num;
+                string selectedID = searchWindow.SelectedID;
+
+
+                //find the invoice in the datagrid
+                int i = 0;
+                if (selectedID != "")
+                {
+                    num = Convert.ToInt32(selectedID);
+                    foreach (var item in dgInvoice.Items)
+                    {
+                        LineItemDisplayContainer selectedItem = (LineItemDisplayContainer)item;
+                        if (selectedItem.InvoiceNum == num)
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+
+                    dgInvoice.SelectedIndex = i;
+                }
+                this.Show();
             }
             catch (Exception ex)
             {
@@ -220,7 +242,7 @@ namespace GroupProject
                 ComboBox item = (ComboBox)sender;
                 curItem = item.ToString();
 
-                if (!isAddItem)
+                if (!isAddingItem)
                 {
                     string value = cmbInvoiceItem.SelectedItem.ToString();
 
@@ -321,15 +343,15 @@ namespace GroupProject
             {
                 isEditing = false;
                 isCreatingNewInvoice = true;
-                isAddItem = false;
+                isAddingItem = false;
                 txtInvoiceNum.IsEnabled = true;
                 dpInvoiceDate.IsEnabled = true;
                 txtTotalCost.IsEnabled = true;
                 cmbInvoiceItem.IsEnabled = true;
                 btnAddItem.IsEnabled = true;
-                btnSave.IsEnabled = true;
-                btnEdit.IsEnabled = true;
-                btnDelete.IsEnabled = true;
+                btnSave.IsEnabled = false;
+                btnEdit.IsEnabled = false;
+                btnDelete.IsEnabled = false;
 
                 dpInvoiceDate.SelectedDate = DateTime.Today;
                 clsMainLogic.SaveInvoice(dpInvoiceDate.SelectedDate.Value.Date.ToShortDateString(), "0");
@@ -361,9 +383,8 @@ namespace GroupProject
         {
             try
             {
-                // TODO: if !isEditing
-                string t = total.ToString();
-                clsMainLogic.UpdateInvoiceTotal(InvoiceNum, t);
+                string total = this.total.ToString();
+                clsMainLogic.UpdateInvoiceTotal(InvoiceNum, total);
                 clsMainLogic.InsertLineItem(InvoiceNum, lineItemNum, itemCode);
 
                 //clear old data
@@ -384,8 +405,9 @@ namespace GroupProject
                 dpInvoiceDate.IsEnabled = false;
                 txtTotalCost.IsEnabled = false;
                 cmbInvoiceItem.IsEnabled = false;
-                //cmbxItemsAdded.IsEnabled = false;
-                //Enable Save button
+                btnEdit.IsEnabled = true;
+                btnDelete.IsEnabled = true;
+                btnNew.IsEnabled = true;
                 btnSave.IsEnabled = false;
                 isCreatingNewInvoice = false;
                 isEditing = false;
@@ -534,7 +556,7 @@ namespace GroupProject
         {
             try
             {
-                isAddItem = true;
+                isAddingItem = true;
                 //if (curItem.Equals(" ") || curItem.Equals(null)) return;
                 string itemDesc = cmbInvoiceItem.SelectedItem.ToString();
                 //Add Item to List of Invoice Added Items
@@ -578,9 +600,7 @@ namespace GroupProject
 
                 //Clear Selected Item
                 cmbInvoiceItem.SelectedIndex = -1;
-                //Change Add Item Button IsEnabled to false
-                //btnAddItem.IsEnabled = false;
-
+                btnSave.IsEnabled = true;
                 //Change Total
                 txtTotalCost.Text = "$ " + String.Format("{0:N2}", total);
 
