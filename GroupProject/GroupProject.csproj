@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <None Include=".gitignore" />
     <Compile Include="clsDataAccess.cs" />
     <Compile Include="InvoiceDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -67,7 +66,10 @@
     <Compile Include="Items\wndItems.xaml.cs">
       <DependentUpon>wndItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\InterfaceItemLineItems.cs" />
+    <Compile Include="Model\InvoiceModel.cs" />
     <Compile Include="Model\ItemViewModel.cs" />
+    <Compile Include="Model\LineItemsModel.cs" />
     <Compile Include="Search\clsSearchLogic.cs" />
     <Compile Include="Search\clsSearchSQL.cs" />
     <Compile Include="Search\wndSearch.xaml.cs">

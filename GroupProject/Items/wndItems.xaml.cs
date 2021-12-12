@@ -21,6 +21,16 @@ namespace GroupProject.Items
         public ObservableCollection<ItemViewModel> Items { get; set; }
 
         /// <summary>
+        /// MainWindow used to refresh main window after action
+        /// </summary>
+        public MainWindow Main;
+
+        /// <summary>
+        /// List of items from the ItemViewModel
+        /// </summary>
+        List<ItemViewModel> items;
+
+        /// <summary>
         /// An item onchanged handler
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,9 +62,11 @@ namespace GroupProject.Items
         /// Constructor for other windows to pass info into the window
         /// </summary>
         /// <param name="items"></param>
-        public wndItems(List<ItemViewModel> items)
+        public wndItems()
         {
             _logic = new clsItemsLogic();
+            Main = (MainWindow)Application.Current.MainWindow;
+            items = _logic.GetItemViewModels();
             Items = new ObservableCollection<ItemViewModel>(items);
             DataContext = this;
             InitializeComponent();
@@ -87,6 +99,7 @@ namespace GroupProject.Items
                     Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
                     ItemsGrid.ItemsSource = null;
                     ItemsGrid.ItemsSource = Items;
+                    Main.RefreshWindow();
                 }
                 else
                 {
@@ -117,6 +130,7 @@ namespace GroupProject.Items
                         Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
                         ItemsGrid.ItemsSource = null;
                         ItemsGrid.ItemsSource = Items;
+                        Main.RefreshWindow();
                     }
                     else
                     {
@@ -164,6 +178,7 @@ namespace GroupProject.Items
                     Items = new ObservableCollection<ItemViewModel>(_logic.GetItemViewModels());
                     ItemsGrid.ItemsSource = null;
                     ItemsGrid.ItemsSource = Items;
+                    Main.RefreshWindow();
                 }
                 else
                 {
